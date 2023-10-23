@@ -5,8 +5,8 @@
 <script setup>
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 p {
-    color: #0fbe88;
+    color: $primary500;
 }
 </style>
