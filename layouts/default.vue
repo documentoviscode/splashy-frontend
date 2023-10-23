@@ -3,5 +3,9 @@
     <slot />
 </template>
 
-<style scoped>
+<style lang="scss">
+body {
+    background-color: $background500;
+    color: $text500;
+}
 </style>
