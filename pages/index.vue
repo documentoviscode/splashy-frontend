@@ -7,6 +7,10 @@
 
             <button>Zaloguj</button>
         </form>
+        <div class="partner-link">
+            <span>WIP</span>
+            <nuxt-link to="/partner">Podstrona partnera</nuxt-link>
+        </div>
     </div>
 </template>
 
@@ -46,6 +50,25 @@ button {
 }
 button:hover {
     background-color: $primary600;
+}
+.partner-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
+
+    & > a {
+        text-decoration: none;
+        color: inherit;
+
+    }
+
+    & > span {
+        font-weight: 600;
+        font-size: 1.2em;
+    }
 }
 .center {
   display: block;
