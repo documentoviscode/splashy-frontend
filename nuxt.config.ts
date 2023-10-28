@@ -8,5 +8,10 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  app: {
+    head: {
+      title: 'SplashyTV'
+    }
   }
 })
