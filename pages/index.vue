@@ -1,7 +1,12 @@
 <template>
     <div>
-        <h2>Home</h2>
-        <TestComponent />
+        <img src="~/assets/logo.png" alt="logo">
+        <form>
+            <label>Zaloguj się za pomocą adresu e-mail</label>
+            <input type="email" required>
+
+            <button>Zaloguj</button>
+        </form>
     </div>
 </template>
 
