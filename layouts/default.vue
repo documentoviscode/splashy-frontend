@@ -7,5 +7,6 @@
 body {
     background-color: $background500;
     color: $text500;
+    font-family: "Lato", sans-serif;
 }
 </style>
