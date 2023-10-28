@@ -14,5 +14,12 @@ export default defineNuxtConfig({
     head: {
       title: 'SplashyTV'
     }
-  }
+  },
+  modules: [
+    ['@nuxtjs/google-fonts', {
+    families: {
+      Lato: [100, 300]
+    }
+  }],
+]
 })
