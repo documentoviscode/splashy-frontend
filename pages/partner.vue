@@ -10,6 +10,7 @@
                 nickname="belledelphine97_"
                 full-name="Belle Delphine"
                 profile-picture-file="streamer1.jpg"
+                verified="true"
             />
             <div class="brief-statistics">
                 <info-card

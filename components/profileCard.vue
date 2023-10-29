@@ -11,6 +11,10 @@ export default defineComponent({
         fullName: {
             required: true,
         },
+        verified: {
+            type: Boolean,
+            default: false,
+        }
     },
 })
 </script>
@@ -21,7 +25,7 @@ export default defineComponent({
             <div class="name">
                 <div class="nick">
                     <span>{{ nickname }}</span>
-                    <img src="@/assets/verified-icon.png" alt="verified icon">
+                    <img v-if="verified" src="@/assets/verified-icon.png" alt="verified icon">
                 </div>
                 <span class="fullname">{{ fullName }}</span>
             </div>
