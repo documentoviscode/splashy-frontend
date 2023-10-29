@@ -47,7 +47,15 @@
                         <span class="important">70%</span>
                     </div>
                     <div class="buttons">
-
+                        <button-component
+                            text="Przedłuż umowę"
+                            icon-name="duplicate-outline"
+                        />
+                        <button-component
+                            text="Rozwiąż umowę"
+                            icon-name="exit-outline"
+                            color="#dd3333"
+                        />
                     </div>
                 </div>
             </div>
@@ -138,6 +146,12 @@
                 & > .caption {
                     font-size: 1.3em;
                 }
+            }
+
+            & > .buttons {
+                margin-top: 1em;
+                display: flex;
+                gap: 1em;
             }
         }
     }
