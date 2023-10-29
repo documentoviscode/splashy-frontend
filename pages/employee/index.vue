@@ -1,6 +1,8 @@
 <template>
     <div class="main-container">
-        <img src="~/assets/logo.png" alt="logo" class="center">
+        <div class="logo">
+            <img src="~/assets/documentovisco-transparent.png" alt="logo">
+        </div>
         <p style="margin: 40px 40px">Witaj na portalu zarządzania umowami z partnerami oraz raportami firmy SplashyTV</p>
         <div class="buttons">
             <button>Partnerzy</button>
@@ -39,5 +41,8 @@ button {
 }
 button:hover {
     background-color: $primary600;
+}
+.logo {
+    max-width: 40%;
 }
 </style>

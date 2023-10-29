@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="~/assets/logo.png" alt="logo" class="center">
+        <img src="~/assets/documentovisco-transparent.png" alt="logo" class="center">
         <form @submit.prevent="handleSubmit">
             <label>Zaloguj się za pomocą adresu e-mail</label>
             <input type="email" required>
