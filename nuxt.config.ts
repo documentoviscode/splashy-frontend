@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   modules: [
     ['@nuxtjs/google-fonts', {
     families: {
-      Lato: [100, 300]
+      Lato: [100, 300, 500, 700, 900]
     }
   }],
   ['nuxt-icon']
