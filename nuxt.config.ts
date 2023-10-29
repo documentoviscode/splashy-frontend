@@ -21,6 +21,7 @@ export default defineNuxtConfig({
       Lato: [100, 300, 500, 700, 900]
     }
   }],
-  ['nuxt-icon']
+    ['nuxt-icon'],
+    ['@nuxt/ui']
 ]
 })
