@@ -1,7 +1,9 @@
 <template>
     <div class="main-container">
         <div class="header">
-            <img src="~/assets/documentovisco-transparent-light.png" alt="logo">
+            <nuxt-link class="home" to="/">
+                <img src="~/assets/documentovisco-transparent-light.png" alt="logo" @click="">
+            </nuxt-link>
             <h1>Panel partnera</h1>
         </div>
         <div class="content">
@@ -126,8 +128,17 @@
         align-items: center;
         background-color: $primary600;
 
-        & > img {
-            width: 8em;
+        & > .home {
+            & > img {
+                width: 8em;
+                transition: 0.1s ease-in-out;
+            }
+            & > img:hover {
+                filter: brightness(0.9);
+            }
+            & > img:active {
+                filter: brightness(0.8);
+            }
         }
 
         & > h1 {
