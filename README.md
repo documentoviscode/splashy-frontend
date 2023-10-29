@@ -1,7 +1,24 @@
 # SplashyTV Frontend
 
+## Setup
+
+To install the necessary dependencies (along with Nuxt.js) run:
+```shell
+npm install
+```
+
 ## Running
-To run this project on localhost you need to have Node.js installed and run the following command on the terminal: `npm run dev`
+To run this project on localhost you need to have Node.js installed and run the
+following command on the terminal:
+
+```shell
+npm run dev
+```
+
+The website will become available at http://localhost:3000/partner
+
+The development server allows for hot-reloading - saving a file will immediately
+update the rendered site.
 
 ## Project sructure
 
