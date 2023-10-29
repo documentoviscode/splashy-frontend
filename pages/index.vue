@@ -9,7 +9,9 @@
         </form>
         <div class="partner-link">
             <span>WIP</span>
-            <nuxt-link to="/partner">Podstrona partnera</nuxt-link>
+            <div>
+                <nuxt-link to="/partner">Podstrona partnera</nuxt-link>
+            </div>
         </div>
     </div>
 </template>
@@ -54,21 +56,33 @@ button:hover {
 .partner-link {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    row-gap: 1em;
     align-items: center;
     justify-content: center;
     font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
 
-    & > a {
-        text-decoration: none;
-        color: inherit;
+    & > div {
+        background-color: $primary500;
+        border-radius: 4em;
+        padding: 10px 20px;
+        transition: background-color 0.15s ease-in-out;
 
+        &:hover {
+            background-color: $primary600;
+        }
+
+        & > a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        & > span {
+            font-weight: 600;
+            font-size: 1.2em;
+        }
     }
 
-    & > span {
-        font-weight: 600;
-        font-size: 1.2em;
-    }
+
 }
 .center {
   display: block;
