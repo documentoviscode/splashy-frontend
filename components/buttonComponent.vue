@@ -2,7 +2,7 @@
     import {defineComponent} from 'vue'
 
     export default defineComponent({
-        name: "button",
+        name: "buttonComponent",
         props: {
             iconName: {
                 type: String,
