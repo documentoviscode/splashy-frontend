@@ -6,10 +6,28 @@
         </div>
         <div class="content">
             <profile-card
+                class="profile-card"
                 nickname="belledelphine97_"
                 full-name="Belle Delphine"
                 profile-picture-file="streamer1.jpg"
             />
+            <div class="brief-statistics">
+                <info-card
+                    data="297.5 tys."
+                    icon-name="person-outline"
+                    caption="Wyświetlenia"
+                />
+                <info-card
+                    data="2 316 680 zł"
+                    icon-name="cash-outline"
+                    caption="Zarobki"
+                />
+                <info-card
+                    data="45 mln. h"
+                    icon-name="time-outline"
+                    caption="Suma oglądalności"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -54,5 +72,14 @@
             font-size: 1.6em;
             font-weight: 500;
         }
+
+        & > .profile-card {
+            margin-bottom: 4em;
+        }
+    }
+
+    .brief-statistics {
+        display: flex;
+        gap: 1em;
     }
 </style>
