@@ -39,7 +39,7 @@ export default defineComponent({
     gap: 0.8em;
     border-radius: 12px;
     border: $primary500 0.2px solid;
-    box-shadow: 0px 0px 3px -1px $primary300;
+    box-shadow: 4px 4px 12px 0 $background800;
 }
 
 .top {
