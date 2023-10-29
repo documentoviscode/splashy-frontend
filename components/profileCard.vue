@@ -2,7 +2,16 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-    name: "profileCard"
+    name: "profileCard",
+    props: {
+        nickname: {
+            required: true,
+            type: String,
+        },
+        fullName: {
+            required: true,
+        },
+    },
 })
 </script>
 
@@ -11,13 +20,13 @@ export default defineComponent({
         <div class="header">
             <div class="name">
                 <div class="nick">
-                    <span>belledelphine97_</span>
+                    <span>{{ nickname }}</span>
                     <img src="@/assets/verified-icon.png" alt="verified icon">
                 </div>
-                <span class="fullname">Belle Delphine</span>
+                <span class="fullname">{{ fullName }}</span>
             </div>
             <div class="profile-pic">
-                <img src="~/assets/streamer-profile-pic.jpg" alt="profile picture">
+                <img src="@/assets/profilePictures/streamer1.jpg" alt="profile picture">
             </div>
         </div>
     </div>
