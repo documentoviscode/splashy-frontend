@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <div class="header">
-            <img src="~/assets/documentovisco-transparent-light.png" alt="logo" class="center">
+            <img src="~/assets/documentovisco-transparent-light.png" alt="logo">
             <h1>Panel partnera</h1>
         </div>
         <div class="content">
@@ -42,7 +42,9 @@
         display: flex;
         flex: 1;
         align-self: center;
-        padding: 4em 0;
+        max-width: 800px;
+        max-height: 800px;
+        padding: 2em 0;
 
         & > span {
             font-size: 1.6em;
