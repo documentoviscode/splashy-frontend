@@ -15,7 +15,7 @@ following command on the terminal:
 npm run dev
 ```
 
-The website will become available at http://localhost:3000/partner
+The website will become available at http://localhost:3000
 
 The development server allows for hot-reloading - saving a file will immediately
 update the rendered site.
