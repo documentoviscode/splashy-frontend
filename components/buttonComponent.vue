@@ -14,6 +14,7 @@
             },
             color: {
                 type: String,
+                required: false,
                 default: '#3770dd',
             },
             onClick: {
@@ -34,7 +35,7 @@
 
 <style scoped lang="scss">
     .container {
-        padding: 0.8em 1.2em;
+        padding: 0.6em 1.2em;
         display: inline-flex;
         align-items: center;
         border-radius: 20px;
