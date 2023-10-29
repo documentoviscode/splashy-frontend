@@ -5,9 +5,11 @@
             <h1>Panel partnera</h1>
         </div>
         <div class="content">
-            <span>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis ea iusto non, obcaecati porro quidem vero?
-            </span>
+            <profile-card
+                nickname="belledelphine97_"
+                full-name="Belle Delphine"
+                profile-picture-file="streamer1.jpg"
+            />
         </div>
     </div>
 </template>
@@ -40,7 +42,9 @@
 
     .content {
         display: flex;
+        flex-direction: column;
         flex: 1;
+        width: 100%;
         align-self: center;
         max-width: 800px;
         max-height: 800px;
