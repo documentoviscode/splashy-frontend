@@ -1,7 +1,7 @@
 <template>
     <div>
         <img src="~/assets/logo.png" alt="logo" class="center">
-        <form>
+        <form @submit.prevent="handleSubmit">
             <label>Zaloguj się za pomocą adresu e-mail</label>
             <input type="email" required>
 
@@ -11,6 +11,9 @@
 </template>
 
 <script setup>
+async function handleSubmit () {
+    console.log("SUBMITTED!!")
+}
 </script>
 
 <style lang="scss" scoped>
@@ -30,14 +33,19 @@ input {
     width: 80%;
     margin: 10px auto;
     border-radius: 20px;
+    padding: 5px 5px;
 }
 button {
     background: $primary500;
     border: 0;
     padding: 10px 50px;
-    margin-top: 20px;
+    margin-top: 30px;
     color: $text500;
     border-radius: 20px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: $primary600;
 }
 .center {
   display: block;
