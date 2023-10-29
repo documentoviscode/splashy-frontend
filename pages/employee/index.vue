@@ -4,9 +4,13 @@
             <img src="~/assets/documentovisco-transparent.png" alt="logo">
         </div>
         <p style="margin: 40px 40px">Witaj na portalu zarządzania umowami z partnerami oraz raportami firmy SplashyTV</p>
-        <div class="buttons">
-            <button>Partnerzy</button>
-            <button>Raporty</button>
+        <div class="links">
+            <div>
+                <nuxt-link to="/employee/partners">Partnerzy</nuxt-link>
+            </div>
+            <div>
+                <nuxt-link to="/employee/raports">Raporty</nuxt-link>
+            </div>
         </div>
     </div>
 </template>
@@ -22,11 +26,32 @@
     justify-content: center;
     align-items: center;
 }
-.buttons {
+.links {
     display: flex;
     flex-direction: row;
     gap: 10em;
     justify-content: space-evenly;
+
+    & > div {
+        background-color: $primary500;
+        border-radius: 4em;
+        padding: 1em 5em;
+        transition: background-color 0.15s ease-in-out;
+
+        &:hover {
+            background-color: $primary600;
+        }
+
+        & > a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        & > span {
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+    }
 
 }
 button {

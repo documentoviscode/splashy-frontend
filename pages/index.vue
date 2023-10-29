@@ -12,6 +12,9 @@
             <div>
                 <nuxt-link to="/partner">Podstrona partnera</nuxt-link>
             </div>
+            <div>
+                <nuxt-link to="/employee">Podstrona pracownika</nuxt-link>
+            </div>
         </div>
     </div>
 </template>
