@@ -29,9 +29,11 @@
 }
 .profile-picture {
     align-self: center;
-}
-.rounded-image {
-    border-radius: 50%;
+
+    & > img {
+        border-radius: 50%;
+        width: 50%;
+    }
 }
 
 .name {
@@ -39,8 +41,7 @@
     align-items: center;
     text-decoration: none;
     color: $text500;
-    letter-spacing: 1em;
-    font-size: 1em;
-    font-weight: 600;
+    font-size: 2em;
+    font-weight: 500;
 }
 </style>
