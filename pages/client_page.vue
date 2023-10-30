@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <button>&lt;&ensp; Powrót</button>
+        <div class="button_return">&lt;&ensp; Powrót</div>
         <div class="client_profile">
             <div>Profil użytkownika</div>
             <img src="../assets/images/example_profile_picture.jpg" alt="Profile picture">
@@ -58,15 +58,17 @@
     column-gap: 20px;
     row-gap: 10px;
     margin: 0 60px;
+
+    
 }
 
-.container > div, button {
+.client_data, .but, .client_card, .button_return {
     background-color: $background400;
     padding: 20px;
     border-radius: 10px;
 }
 
-button {
+.button_return {
     grid-column: 1;
     grid-row: 1;
     justify-self: start;
@@ -74,9 +76,18 @@ button {
     color: $text500;
     align-self: end;
     padding: 10px 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $background300;
+    }
+
+    &:active {
+        background-color: $background500;
+    }
 }
 
-div.client_profile {
+.client_profile {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,17 +96,17 @@ div.client_profile {
     grid-column: 1 / span 2;
     justify-self: end;
     align-self: end;
-}
 
-.client_profile > div {
-    margin-right: 20px;
-    font-size: 30px;
-}
+    & > div {
+        margin-right: 20px;
+        font-size: 30px;
+    }
 
-.client_profile > img {
-    width: 100px;
-    height: 100px;
-    border-radius: 100%;
+    & > img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+    }
 }
 
 .client_profile > img, div {
@@ -181,14 +192,14 @@ div.client_profile {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 20px;
-    background-color: $background500 !important;
-    padding: 0 !important;
-}
-
-.buttons > div {
-    background-color: $background400;
-    font-size: 22px;
-    border-radius: 10px;
+    background-color: $background500;
+    padding: 0;
+    
+    & > div {
+        background-color: $background400;
+        font-size: 22px;
+        border-radius: 10px;
+    }
 }
 
 .client_manage_button {
@@ -217,14 +228,12 @@ div.client_profile {
 }
 
 .card_number, .card_valid_date, .card_type {
-    grid-column: 1;
     font-size: 24px;
     width: 360px;
     margin-bottom: 10px;
 }
 
 .label_card_number, .label_card_valid_date, .label_card_type {
-    grid-column: 1;
     font-size: 15px;
     width: 360px;
     margin-bottom: 40px;
@@ -236,5 +245,18 @@ div.client_profile {
 
 .update-card {
     background-color: $primary500;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $primary600;
+    }
+
+    &:active {
+        background-color: $primary400;
+    }
 }
+
 </style>
