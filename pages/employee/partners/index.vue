@@ -85,7 +85,8 @@ const partners = [
 
     .content {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        align-self: center;
         flex: 1;
         width: 100%;
         max-width: 800px;
