@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="button_return">&lt;&ensp; Powrót</div>
+        <nuxt-link to="/" class="button_return">&lt;&ensp; Powrót</nuxt-link>
         <div class="client_profile">
             <div>Profil użytkownika</div>
             <img src="../assets/images/example_profile_picture.jpg" alt="Profile picture">
@@ -64,8 +64,6 @@
     column-gap: 20px;
     row-gap: 10px;
     margin: 0 60px;
-
-    
 }
 
 .client_data, .but, .client_card, .button_return {
