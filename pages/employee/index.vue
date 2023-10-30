@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <div class="logo">
-            <img src="~/assets/documentovisco-transparent.png" alt="logo">
+            <img src="~/assets/documentovisco-transparent-light.png" alt="logo">
         </div>
         <p style="margin: 40px 40px">Witaj na portalu zarządzania umowami z partnerami oraz raportami firmy SplashyTV</p>
         <div class="links">
@@ -25,6 +25,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > p {
+        font-size: 1.2em;
+    }
 }
 .links {
     display: flex;
@@ -68,6 +72,7 @@ button:hover {
     background-color: $primary600;
 }
 .logo {
-    max-width: 40%;
+    margin-top: 6em;
+    max-width: 20%;
 }
 </style>
