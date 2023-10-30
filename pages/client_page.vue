@@ -7,12 +7,18 @@
         </div>
         <div class="client_data">
             <div class="data_header">Twoje dane</div>
-            <div class="username">janusz1968pl</div>
-            <div class="label_username">Nazwa użytkownika</div>
-            <div class="names">Janusz Nowacki</div>
-            <div class="label_names">Imię i nazwisko</div>
-            <div class="email">j.nowacki@p.cichowski.com</div>
-            <div class="label_email">E-mail</div>
+            <div class="credential">
+                <span>janusz1968pl</span>
+                <label>Nazwa użytkownika</label>
+            </div>
+            <div class="credential">
+                <span>Janusz Nowacki</span>
+                <label>Imię i nazwisko</label>
+            </div>
+            <div class="credential">
+                <span>j.nowacki@p.cichowski.com</span>
+                <label>E-mail</label>
+            </div>
             <div class="subscriptions">
                 <div class="subscriptions_header">Subskrypcja i pakiety dodatkowe</div>
                 <div class="balance_state">
@@ -53,7 +59,7 @@
 .container {
     width: 100%;
     display: grid;
-    grid-template-columns: 900px 400px;
+    grid-template-columns: 920px 400px;
     grid-template-rows: 2fr 5fr 1fr;
     column-gap: 20px;
     row-gap: 10px;
@@ -128,14 +134,21 @@
     margin-bottom: 30px;
 }
 
-.username, .names, .email {
+.credential {
     grid-column: 1;
-    font-size: 24px;
-}
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
 
-.label_username, .label_names, .label_email {
-    grid-column: 1;
-    font-size: 15px;
+    & > span {
+        font-size: 24px;
+    }
+
+    & > label {
+        font-size: 15px;
+    }
 }
 
 .subscriptions {
@@ -189,16 +202,19 @@
 
 .buttons {
     grid-column: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
     background-color: $background500;
-    padding: 0;
+    flex-basis: max-content;
+    gap: 30px;
     
     & > div {
         background-color: $background400;
         font-size: 22px;
         border-radius: 10px;
+        flex-grow: 1;
     }
 }
 
