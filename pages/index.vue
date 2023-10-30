@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="~/assets/logo.png" alt="logo" class="center">
+        <img src="~/assets/documentovisco-transparent-light.png" alt="logo" class="center">
         <form @submit.prevent="handleSubmit">
             <label>Zaloguj się za pomocą adresu e-mail</label>
             <input type="email" required>
@@ -9,9 +9,18 @@
         </form>
         <div class="partner-link">
             <span>WIP</span>
-            <div>
-                <nuxt-link to="/partner">Podstrona partnera</nuxt-link>
-            </div>
+            <nuxt-link to="/partner">
+                <button-component
+                    text="Podstrona partnera"
+                    icon-name="headset-outline"
+                />
+            </nuxt-link>
+            <nuxt-link to="/employee">
+                <button-component
+                    text="Podstrona admina"
+                    icon-name="build-outline"
+                />
+            </nuxt-link>
         </div>
     </div>
 </template>
