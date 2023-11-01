@@ -9,7 +9,7 @@
                 <nuxt-link to="/employee/partners">Partnerzy</nuxt-link>
             </div>
             <div>
-                <nuxt-link to="/employee/raports">Raporty</nuxt-link>
+                <nuxt-link to="/employee/reports">Raporty</nuxt-link>
             </div>
         </div>
     </div>
