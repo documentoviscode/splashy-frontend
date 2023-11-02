@@ -68,6 +68,7 @@
         display: flex;
         flex-direction: column;
         font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
+        height: 100vh;
     }
     .header {
         display: flex;
