@@ -68,7 +68,6 @@
         display: flex;
         flex-direction: column;
         font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
-        height: 100vh;
     }
     .header {
         display: flex;
@@ -102,6 +101,7 @@
         align-self: center;
         max-width: 800px;
         padding: 2em 0 4em;
+        min-height: 80vh;
 
         & > span {
             font-size: 1.6em;
