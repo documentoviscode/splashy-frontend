@@ -6,10 +6,14 @@
         <p style="margin: 40px 40px">Witaj na portalu zarządzania umowami z partnerami oraz raportami firmy SplashyTV</p>
         <div class="links">
             <div>
-                <nuxt-link to="/employee/partners">Partnerzy</nuxt-link>
+                <nuxt-link to="/employee/partners">
+                    <button-component text="Partnerzy" />
+                </nuxt-link>
             </div>
             <div>
-                <nuxt-link to="/employee/raports">Raporty</nuxt-link>
+                <nuxt-link to="/employee/reports">
+                    <button-component text="Raporty" />
+                </nuxt-link>
             </div>
         </div>
     </div>
@@ -35,41 +39,6 @@
     flex-direction: row;
     gap: 10em;
     justify-content: space-evenly;
-
-    & > div {
-        background-color: $primary500;
-        border-radius: 4em;
-        padding: 1em 5em;
-        transition: background-color 0.15s ease-in-out;
-
-        &:hover {
-            background-color: $primary600;
-        }
-
-        & > a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        & > span {
-            font-weight: 600;
-            font-size: 1.2em;
-        }
-    }
-
-}
-button {
-    flex: 1;
-    background: $primary500;
-    border: 0;
-    padding: 1em 6em;
-    margin: 4em auto;
-    color: $text500;
-    border-radius: 3em;
-    cursor: pointer;
-}
-button:hover {
-    background-color: $primary600;
 }
 .logo {
     margin-top: 6em;
