@@ -24,7 +24,8 @@ export default defineComponent({
         <div class="header">
             <div class="name">
                 <div class="nick">
-                    <span>{{ nickname }}</span>
+                    <span v-if="nickname.length < 20" class="short-nick">{{ nickname }}</span>
+                    <span v-if="nickname.length >= 20" class="long-nick">{{ nickname }}</span>
                     <img v-if="verified" src="@/assets/verified-icon.png" alt="verified icon">
                 </div>
                 <span class="fullname">{{ fullName }}</span>
@@ -58,11 +59,18 @@ export default defineComponent({
         row-gap: 1em;
 
         & > .nick {
-            font-size: 2.8em;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.6em;
+            
+            & > .short-nick {
+            font-size: 2.8em;
+            }
+
+            & > .long-nick {
+                font-size: 2em;
+            }
 
             & > img {
                 width: 36px;
