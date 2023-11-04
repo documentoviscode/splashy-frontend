@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="client_container">
         <nuxt-link to="/" class="button_return">&lt;&ensp; Powrót</nuxt-link>
         <div class="client_profile">
             <div>Profil użytkownika</div>
@@ -55,15 +55,19 @@
 <script setup>
 </script>
 
-<style lang="scss">
-.container {
-    width: 100%;
+<style lang="scss" scoped>
+#__nuxt {
+    display: flex;
+    justify-content: center;
+}
+
+.client_container {
+    width: 1340px;
     display: grid;
     grid-template-columns: 920px 400px;
     grid-template-rows: 2fr 5fr 1fr;
     column-gap: 20px;
-    row-gap: 10px;
-    margin: 0 60px;
+    row-gap: 20px;
 }
 
 .client_data, .but, .client_card, .button_return {
@@ -104,6 +108,7 @@
     & > div {
         margin-right: 20px;
         font-size: 30px;
+        float: left;
     }
 
     & > img {
@@ -113,7 +118,7 @@
     }
 }
 
-.client_profile > img, div {
+.client_profile > div {
     float: left;
 }
 
@@ -272,5 +277,4 @@
         background-color: $primary400;
     }
 }
-
 </style>

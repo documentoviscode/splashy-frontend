@@ -18,7 +18,12 @@
 <script setup>
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+#__nuxt {
+    display: flex;
+    justify-content: center;
+}
+
 .sub_form {
     width: 800px;
     display: flex;
@@ -26,7 +31,7 @@
     align-content: stretch;
     justify-content: flex-start;
     row-gap: 40px;
-    margin: 40px 300px;
+    margin-top: 80px;
     padding: 40px 60px;
     background-color: $background400;
     border-radius: 10px;
@@ -56,7 +61,10 @@
 .buy_sub {
     border-radius: 1000px;
     background-color: $primary500;
-    margin: 0 250px;
     width: 300px;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 </style>
