@@ -4,7 +4,7 @@
             <nuxt-link class="home" to="/">
                 <img src="~/assets/documentovisco-transparent-light.png" alt="logo" @click="">
             </nuxt-link>
-            <h1>Panel partnera</h1>
+            <h1>Panel pracownika</h1>
         </div>
         <div class="content">
             <profile-card
