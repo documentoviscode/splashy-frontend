@@ -18,6 +18,7 @@
                         :options="months"
                         size="xl"
                         color="#3770dd"
+                        option-attribute="name"
                     />
 
                     <div class="section">
@@ -39,7 +40,7 @@
 
                     <div class="buttons small">
                         <button-component
-                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth}`"
+                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
                         />
@@ -54,13 +55,44 @@
 </template>
 
 <script setup>
-    const donations = ref('2 316 680 zł');
+    const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
+
+    const reports = data.value;
+    const donations = ref('');
     const views = ref('297.5 tys.');
     const viewTime = ref('45 mln. h');
     const viewTimeEarnings = ref('10 567 zł')
 
-    const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
+    const months = [
+    {name: 'Czerwiec 2023', value: 6},
+    {name: 'Lipiec 2023', value: 7},
+    {name: 'Sierpień 2023', value: 8},
+    {name: 'Wrzesień 2023', value: 9},
+    {name: 'Październik 2023', value: 10},
+    {name: 'Listopad 2023', value: 11},
+    ]
     const selectedMonth = ref(months.at(-1));
+
+    import {baseAPIURL} from '../../config/api.ts';
+
+    watch(selectedMonth, () => {
+        const report = reports.find((report) => {
+            return report.startDate[1] == selectedMonth.value.value; 
+        });
+
+        if(!report) {
+            donations.value =  "0 PLN";
+            views.value = "0";
+            viewTime.value = "0 h"
+            return;
+        } 
+
+        donations.value = report.donations + " PLN";
+        views.value = report.viewers;
+        viewTime.value = report.hoursWatched + " h";
+    })
+
+
 </script>
 
 <style lang="scss" scoped>
