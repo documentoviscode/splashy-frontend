@@ -9,8 +9,8 @@
         <div class="content">
             <profile-card
                 class="profile-card"
-                nickname="belledelphine97_"
-                full-name="Belle Delphine"
+                :nickname="nickname"
+                :full-name="name + ' ' + surname"
                 profile-picture-file="streamer1.jpg"
                 :verified="true"
             />
@@ -108,6 +108,25 @@
 </template>
 
 <script setup>
+
+    const name = ref('');
+    const surname = ref('');
+    const nickname = ref('');
+
+    onMounted(() => {
+        const userDataString = sessionStorage.getItem('userData');
+        if (userDataString) {
+            const userData = JSON.parse(userDataString);
+            console.log(userData);
+
+            name.value = userData.name;
+            surname.value = userData.surname;
+            nickname.value = userData.email.split('@')[0];
+        }
+    });
+
+
+
     const totalEarnings = ref('2 316 680 zł');
     const views = ref('297.5 tys.');
     const viewTime = ref('45 mln. h');
