@@ -17,11 +17,11 @@ export default defineNuxtConfig({
   },
   modules: [
     ['@nuxtjs/google-fonts', {
-    families: {
-      Lato: [100, 300, 500, 600, 700, 900]
-    }
-  }],
-    ['nuxt-icon'],
-    ['@nuxt/ui']
-]
+      families: {
+        Lato: [100, 300, 500, 600, 700, 900]
+      }
+    }],
+    'nuxt-icon',
+    '@nuxt/ui',
+  ],
 })
