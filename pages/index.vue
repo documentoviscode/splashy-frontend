@@ -3,7 +3,7 @@
         <img src="~/assets/documentovisco-transparent-light.png" alt="logo" class="center">
         <form @submit.prevent="handleSubmit">
             <label>Zaloguj się za pomocą adresu e-mail</label>
-            <input type="email" required>
+            <input v-model="email" type="email" required>
 
             <button>Zaloguj</button>
         </form>
@@ -26,9 +26,40 @@
 </template>
 
 <script setup>
+
+const email = ref('');
+
+const baseAPIURL = 'https://documentovisco-api-81f19f7a148a.herokuapp.com/api/v1';
+
 async function handleSubmit () {
-    console.log("SUBMITTED!!")
+
+    const { data } = await useFetch(baseAPIURL + '/users');
+
+    const users = data.value;
+    const matchingUsers = users.filter(user => user.email.toLowerCase() == email.value.toLowerCase());
+
+    if (matchingUsers.length == 0) {
+        // TODO appropriate message shown on screen
+        console.log('błędny email');
+        return;
+    }
+
+    const currentUser = matchingUsers[0];
+    sessionStorage.setItem("userData", JSON.stringify(currentUser));
+
+    if (currentUser.role == "ADMIN") {
+        await navigateTo('/employee');
+    }
+    
+    if (currentUser.role == "PARTNER") {
+        await navigateTo('/partner');
+    }
+
+    if (currentUser.role == "CLIENT") {
+        await navigateTo('/client');
+    }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -48,7 +79,7 @@ input {
     width: 80%;
     margin: 10px auto;
     border-radius: 20px;
-    padding: 5px 5px;
+    padding: 5px 1em;
 }
 button {
     background: $primary500;
