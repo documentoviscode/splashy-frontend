@@ -29,13 +29,21 @@
 </template>
 
 <script setup>
-// const { data: partners } = await useFetch('api-endpoint')
-const partners = [
-    {"id": 1, "name": "Michał", "surname": "Ziemiec"},
-    {"id": 2, "name": "Michał", "surname": "Ziemiec"},
-    {"id": 3, "name": "Michał", "surname": "Ziemiec"},
-    {"id": 4, "name": "Michał", "surname": "Ziemiec"},
-    {"id": 5, "name": "Michał", "surname": "Ziemiec"}]
+    import {baseAPIURL} from '../../../config/api.ts';
+    const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
+    const partners = ref([]);
+   
+    onMounted(() => { 
+        data.value.forEach(element => {
+            const name = element.name;
+            const surname = element.surname;
+            const id = element.id;
+            const obj = {"id": id, "name": name, "surname": surname}
+            partners.value.push(obj);
+        });
+
+    });
+
 </script>
 
 <style lang="scss" scoped>
