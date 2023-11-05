@@ -70,7 +70,7 @@ async function handleSubmit () {
     }
 
     if (currentUser.role == "CLIENT") {
-        await navigateTo('/client');
+        await navigateTo('/client_page');
     }
 }
 
