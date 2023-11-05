@@ -1,4 +1,5 @@
 <template>
+  <div class="main-container">
     <div class="client_container">
         <nuxt-link to="/" class="button_return">&lt;&ensp; Powrót</nuxt-link>
         <div class="client_profile">
@@ -24,32 +25,42 @@
                 <div class="balance_state">
                     Twój kolejny rachunek w dniu <strong>14.11.23</strong> wynosi <strong>30.56 zł</strong>.
                 </div>
-                <div class="bundles_label">Pakiety dodatkowe</div>
-                <div class="bundles">
-                    <div class="bundle">Pakiet 1</div>
-                    <div class="bundle">Pakiet 2</div>
+                <div class="credential">
+                    <span>j.nowacki@p.cichowski.com</span>
+                    <label>E-mail</label>
+                </div>
+                <div class="subscriptions">
+                    <div class="subscriptions_header">Subskrypcja i pakiety dodatkowe</div>
+                    <div class="balance_state">
+                        Twój kolejny rachunek w dniu <strong>14.11.23</strong> wynosi <strong>30.56 zł</strong>.
+                    </div>
+                    <div class="bundles_label">Pakiety dodatkowe</div>
+                    <div class="bundles">
+                        <div class="bundle">Pakiet 1</div>
+                        <div class="bundle">Pakiet 2</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="buttons">
-            <div class="client_manage_button">
-                <div>Zarządzaj swoim panelem</div>
+            <div class="buttons">
+                <div class="client_manage_button">
+                    <div>Zarządzaj swoim panelem</div>
+                </div>
+                <div class="client_edit_button">
+                    <div>Edytuj dane konta</div>
+                </div>
             </div>
-            <div class="client_edit_button">
-                <div>Edytuj dane konta</div>
-            </div>
-        </div>
-        <div class="client_card">
-            <div class="card_header">Karta rachunkowa</div>
-            <div class="card_number">{{ cardNumber }}</div>
-            <div class="label_card_number">Numer karty</div>
-            <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
-            <div class="label_card_valid_date">Data ważności</div>
-            <div class="card_type">Mastercard</div>
-            <div class="label_card_type">Rodzaj karty</div>
-            <button class="update-card">Aktualizuj dane karty</button>
-        </div>
-    </div>
+            <div class="client_card">
+              <div class="card_header">Karta rachunkowa</div>
+              <div class="card_number">{{ cardNumber }}</div>
+              <div class="label_card_number">Numer karty</div>
+              <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
+              <div class="label_card_valid_date">Data ważności</div>
+              <div class="card_type">Mastercard</div>
+              <div class="label_card_type">Rodzaj karty</div>
+              <button class="update-card">Aktualizuj dane karty</button>
+          </div>
+     </div>
+   </div>
 </template>
 
 <script setup>
@@ -80,14 +91,15 @@
   const userData = sessionStorage.getItem("userData");
 </script>
 
-<style lang="scss">
-#__nuxt {
+<style lang="scss" scoped>
+
+.main-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .client_container {
-    width: 1340px;
     display: grid;
     grid-template-columns: 920px 400px;
     grid-template-rows: 2fr 5fr 1fr;
