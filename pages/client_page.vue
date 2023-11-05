@@ -55,7 +55,7 @@
 <script setup>
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #__nuxt {
     display: flex;
     justify-content: center;
