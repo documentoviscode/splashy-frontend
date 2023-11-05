@@ -1,32 +1,23 @@
 <template>
-  <div class="main-container">
-    <div class="client_container">
-        <nuxt-link to="/" class="button_return">&lt;&ensp; Powrót</nuxt-link>
-        <div class="client_profile">
-            <div>Profil użytkownika</div>
-            <img src="../assets/images/example_profile_picture.jpg" alt="Profile picture">
-        </div>
-        <div class="client_data">
-            <div class="data_header">Twoje dane</div>
-            <div class="credential">
-                <span>{{ nickname }}</span>
-                <label>Nazwa użytkownika</label>
+    <div class="main-container">
+        <div class="client_container">
+            <nuxt-link to="/" class="button_return">&lt;&ensp; Powrót</nuxt-link>
+            <div class="client_profile">
+                <div>Profil użytkownika</div>
+                <img src="../assets/images/example_profile_picture.jpg" alt="Profile picture">
             </div>
-            <div class="credential">
-                <span>{{ name }} {{ surname }}</span>
-                <label>Imię i nazwisko</label>
-            </div>
-            <div class="credential">
-                <span>{{ email }}</span>
-                <label>E-mail</label>
-            </div>
-            <div class="subscriptions">
-                <div class="subscriptions_header">Subskrypcja i pakiety dodatkowe</div>
-                <div class="balance_state">
-                    Twój kolejny rachunek w dniu <strong>14.11.23</strong> wynosi <strong>30.56 zł</strong>.
+            <div class="client_data">
+                <div class="data_header">Twoje dane</div>
+                <div class="credential">
+                    <span>{{ nickname }}</span>
+                    <label>Nazwa użytkownika</label>
                 </div>
                 <div class="credential">
-                    <span>j.nowacki@p.cichowski.com</span>
+                    <span>{{ name }} {{ surname }}</span>
+                    <label>Imię i nazwisko</label>
+                </div>
+                <div class="credential">
+                    <span>{{ email }}</span>
                     <label>E-mail</label>
                 </div>
                 <div class="subscriptions">
@@ -50,18 +41,17 @@
                 </div>
             </div>
             <div class="client_card">
-              <div class="card_header">Karta rachunkowa</div>
-              <div class="card_number">{{ cardNumber }}</div>
-              <div class="label_card_number">Numer karty</div>
-              <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
-              <div class="label_card_valid_date">Data ważności</div>
-              <div class="card_type">Mastercard</div>
-              <div class="label_card_type">Rodzaj karty</div>
-              <button class="update-card">Aktualizuj dane karty</button>
-          </div>
-     </div>
-   </div>
-  </div>
+                <div class="card_header">Karta rachunkowa</div>
+                <div class="card_number">{{ cardNumber }}</div>
+                <div class="label_card_number">Numer karty</div>
+                <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
+                <div class="label_card_valid_date">Data ważności</div>
+                <div class="card_type">Mastercard</div>
+                <div class="label_card_type">Rodzaj karty</div>
+                <button class="update-card">Aktualizuj dane karty</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
