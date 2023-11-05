@@ -58,10 +58,10 @@
     const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
 
     const reports = data.value;
-    const donations = ref('');
-    const views = ref('297.5 tys.');
-    const viewTime = ref('45 mln. h');
-    const viewTimeEarnings = ref('10 567 zł')
+    const donations = ref('0 PLN');
+    const views = ref('0');
+    const viewTime = ref('0 h');
+    const viewTimeEarnings = ref('0 PLN')
 
     const months = [
     {name: 'Czerwiec 2023', value: 6},
@@ -74,6 +74,24 @@
     const selectedMonth = ref(months.at(-1));
 
     import {baseAPIURL} from '../../config/api.ts';
+
+    onMounted(() => {
+        const report = reports.find((report) => {
+            return report.startDate[1] == selectedMonth.value.value; 
+        });
+
+        if(!report) {
+            donations.value =  "0 PLN";
+            views.value = "0";
+            viewTime.value = "0 h"
+            return;
+        } 
+
+        donations.value = report.donations + " PLN";
+        views.value = report.viewers;
+        viewTime.value = report.hoursWatched + " h";
+    });
+
 
     watch(selectedMonth, () => {
         const report = reports.find((report) => {
