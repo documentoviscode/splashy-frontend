@@ -8,15 +8,15 @@
         <div class="client_data">
             <div class="data_header">Twoje dane</div>
             <div class="credential">
-                <span>janusz1968pl</span>
+                <span>{{ nickname }}</span>
                 <label>Nazwa użytkownika</label>
             </div>
             <div class="credential">
-                <span>Janusz Nowacki</span>
+                <span>{{ name }} {{ surname }}</span>
                 <label>Imię i nazwisko</label>
             </div>
             <div class="credential">
-                <span>j.nowacki@p.cichowski.com</span>
+                <span>{{ email }}</span>
                 <label>E-mail</label>
             </div>
             <div class="subscriptions">
@@ -41,9 +41,9 @@
         </div>
         <div class="client_card">
             <div class="card_header">Karta rachunkowa</div>
-            <div class="card_number">**** **** **** 2500</div>
+            <div class="card_number">{{ cardNumber }}</div>
             <div class="label_card_number">Numer karty</div>
-            <div class="card_valid_date">07 / 24</div>
+            <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
             <div class="label_card_valid_date">Data ważności</div>
             <div class="card_type">Mastercard</div>
             <div class="label_card_type">Rodzaj karty</div>
@@ -53,6 +53,31 @@
 </template>
 
 <script setup>
+    const name = ref('');
+    const surname = ref('');
+    const nickname = ref('');
+    const email = ref('');
+    const cardNumber = ref('');
+    const cardExpirationDate = ref('');
+
+    onMounted(() => {
+        const userDataString = sessionStorage.getItem('userData');
+        if (userDataString) {
+            const userData = JSON.parse(userDataString);
+            console.log(userData);
+
+            name.value = userData.name;
+            surname.value = userData.surname;
+            nickname.value = userData.email.split('@')[0];
+            email.value = userData.email;
+            cardNumber.value = userData.creditCard.number;
+            cardExpirationDate.value = userData.creditCard.expirationDate;
+        }
+    });
+
+
+
+  const userData = sessionStorage.getItem("userData");
 </script>
 
 <style lang="scss">
