@@ -10,6 +10,12 @@
         </form>
         <div class="partner-link">
             <span>WIP</span>
+            <nuxt-link to="/client_page">
+                <button-component
+                    text="Podstrona klienta"
+                    icon-name="person-outline"
+                />
+            </nuxt-link>
             <nuxt-link to="/partner">
                 <button-component
                     text="Podstrona partnera"
