@@ -1,27 +1,31 @@
 <template>
-    <div class="sub_form">
-        <div class="header">Wybierz subskrypcję:</div>
-        <select>
-            <option value="0">--</option>
-            <option value="1">Pakiet 1</option>
-            <option value="2">Pakiet 2</option>
-        </select>
-        <div class="price">Cena: <strong>40.00 zł</strong></div>
-        <div class="period">Czas: miesięcznie/na zawsze</div>
-        <div class="description">
-            Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel massa augue. Curabitur tortor arcu, tristique in cursus eu, maximus vitae ex. Integer at nibh in massa viverra fringilla sit amet ac risus. Fusce arcu ante, dictum pharetra suscipit a, vehicula vel nisi.
+    <div class="main-container">
+        <div class="sub_form">
+            <div class="header">Wybierz subskrypcję:</div>
+            <select>
+                <option value="0">--</option>
+                <option value="1">Pakiet 1</option>
+                <option value="2">Pakiet 2</option>
+            </select>
+            <div class="price">Cena: <strong>40.00 zł</strong></div>
+            <div class="period">Czas: miesięcznie/na zawsze</div>
+            <div class="description">
+                Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel massa augue. Curabitur tortor arcu, tristique in cursus eu, maximus vitae ex. Integer at nibh in massa viverra fringilla sit amet ac risus. Fusce arcu ante, dictum pharetra suscipit a, vehicula vel nisi.
+            </div>
+            <button class="buy_sub">Kup</button>
         </div>
-        <button class="buy_sub">Kup</button>
     </div>
 </template>
 
 <script setup>
 </script>
 
-<style lang="scss">
-#__nuxt {
+<style lang="scss" scoped>
+
+.main-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .sub_form {
