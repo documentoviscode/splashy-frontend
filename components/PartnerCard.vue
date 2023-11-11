@@ -2,7 +2,7 @@
     <NuxtLink :to="`/employee/partners/${partner.id}`" class="link">
         <div class="container">
             <div class="profile-picture">
-                <img src="~/assets/profilePictures/streamer1.jpg" alt="profile photo" class="rounded-image">
+                <img :src="`/profilePictures/${partner.avatar}`" alt="profile photo" class="rounded-image">
             </div>
             <div class="name">
                 {{ partner.name }} {{ partner.surname }}
@@ -32,7 +32,7 @@
 
     & > img {
         border-radius: 50%;
-        width: 50%;
+        width: 8em;
     }
 }
 

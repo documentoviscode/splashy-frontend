@@ -24,15 +24,8 @@
     const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
     const partners = ref([]);
    
-    onMounted(() => { 
-        data.value.forEach(element => {
-            const name = element.name;
-            const surname = element.surname;
-            const id = element.id;
-            const obj = {"id": id, "name": name, "surname": surname}
-            partners.value.push(obj);
-        });
-
+    onMounted(() => {
+        partners.value = data.value;
     });
 
 </script>
