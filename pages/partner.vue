@@ -108,6 +108,7 @@
 </template>
 
 <script setup>
+    import ZBClient from "zeebe-node";
 
     const name = ref('');
     const surname = ref('');
@@ -117,7 +118,6 @@
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
             const userData = JSON.parse(userDataString);
-            console.log(userData);
 
             name.value = userData.name;
             surname.value = userData.surname;
@@ -125,14 +125,15 @@
         }
     });
 
-
-
     const totalEarnings = ref('2 316 680 zł');
     const views = ref('297.5 tys.');
     const viewTime = ref('45 mln. h');
 
     const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
     const selectedMonth = ref(months.at(-1));
+
+    const zeebeClient = new ZBClient();
+
 </script>
 
 <style lang="scss" scoped>

@@ -10,29 +10,34 @@
         </form>
         <div class="partner-link">
             <span>WIP</span>
-            <nuxt-link to="/client_page">
+            <div>
                 <button-component
                     text="Podstrona klienta"
                     icon-name="person-outline"
+                    :on-click="() => {email = 'ernest.kolodziej@gmail.com'}"
                 />
-            </nuxt-link>
-            <nuxt-link to="/partner">
+            </div>
+            <div>
                 <button-component
                     text="Podstrona partnera"
                     icon-name="headset-outline"
+                    :on-click="() => {email = 'alicja.wroblewska@wp.pl'}"
                 />
-            </nuxt-link>
-            <nuxt-link to="/employee">
+            </div>
+            <div>
                 <button-component
                     text="Podstrona admina"
                     icon-name="build-outline"
+                    :on-click="() => {email = 'cezary.krawczyk@gmail.com'}"
                 />
-            </nuxt-link>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
+
+import { baseAPIURL } from '~/config/api.ts';
 
 const email = ref('');
 
@@ -41,9 +46,6 @@ const wrongEmail = ref(false);
 onMounted(() => {
     sessionStorage.clear();
 });
-
-
-const baseAPIURL = 'https://documentovisco-api-81f19f7a148a.herokuapp.com/api/v1';
 
 async function handleSubmit () {
 
@@ -119,33 +121,10 @@ button:hover {
 .partner-link {
     display: flex;
     flex-direction: column;
-    row-gap: 1em;
+    row-gap: 1.2em;
     align-items: center;
     justify-content: center;
     font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
-
-    & > div {
-        background-color: $primary500;
-        border-radius: 4em;
-        padding: 10px 20px;
-        transition: background-color 0.15s ease-in-out;
-
-        &:hover {
-            background-color: $primary600;
-        }
-
-        & > a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        & > span {
-            font-weight: 600;
-            font-size: 1.2em;
-        }
-    }
-
-
 }
 .center {
   display: block;
