@@ -18,7 +18,7 @@
                 icon-name="build-outline"
                 :onClick="buy"
             />
-
+                <span style="color: red; text-align: center; font-size: 24px;"><b>{{ buyText }}</b></span>
         </div>
     </div>
 </template>
@@ -28,18 +28,12 @@
     const userId = ref('');
     const description = ref('Lorem ipsum dolor sit amet');
     const price = ref('0.00 zł');
-
-//    const packages = [
-//    {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
-//    {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
-//    ];
+    const buyText = ref('');
 
     const packages = [
-    {name: 'Freezing b!ch3s', value: 0},
-    {name: 'Old but gold', value: 1}
+    {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
+    {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
     ];
-
-
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData')
@@ -52,22 +46,39 @@
     
     const selectedSubscription = ref(packages.at(-1));
 
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const day = today.getDate().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    }
+
+    // Example usage
+    const currentDate = getCurrentDate();
+
     import {baseAPIURL} from '~/config/api.ts';
     
     const buy = async () => {
-        const selectedPkg = selectedSubscription.value;
-//        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/additionalPackages" {method: 'POST', body: {
-//            "type": "PDF",
-//            "creationDate": "2023-11-11",
-//            "packageType": packages[selectedPkg].name,
-//            "price": packages[selectedPkg].price,
-//            "gdriveLink": "gdriveLink"
-//        }})
+        const selectedPkg = selectedSubscription.value.value;
+        const {data,pending,error,refresh, status} = await useFetch(baseAPIURL + "/additionalPackages?userId=" + userId.value, {method: 'POST', body: {
+            "type": "PDF",
+            "creationDate": getCurrentDate(),
+            "packageType": packages[selectedPkg].name,
+            "price": packages[selectedPkg].price,
+            "gdriveLink": "gdriveLink"
+        }})
+        if(status.value == 'success') {
+            buyText.value = 'Zakupiono pakiet!'
+        } else {
+            buyText.value = 'Nie udało się zakupić pakietu!'
+        }
     }
 
     watch(selectedSubscription, () => {
-        price.value = packages[selectedSubscription.value].price;
-        description.value = packages[selectedSubscription.value].description;
+          price.value = packages[selectedSubscription.value.value].price;
+          description.value = packages[selectedSubscription.value.value].description;
     })
 
 
