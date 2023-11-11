@@ -1,23 +1,78 @@
 <template>
     <div class="main-container">
         <div class="sub_form">
-            <div class="header">Wybierz subskrypcję:</div>
-            <select>
-                <option value="0">--</option>
-                <option value="1">Pakiet 1</option>
-                <option value="2">Pakiet 2</option>
-            </select>
-            <div class="price">Cena: <strong>40.00 zł</strong></div>
+            <div class="header">Wybierz pakiet:</div>
+            <USelectMenu
+                v-model="selectedSubscription"
+                :options="packages"
+                size="xl"
+                color="#3770dd"
+                option-attribute="name"
+            />
+            <div class="price">Cena: <strong id="price">{{ price }}</strong></div>
             <div class="period">Czas: miesięcznie/na zawsze</div>
-            <div class="description">
-                Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel massa augue. Curabitur tortor arcu, tristique in cursus eu, maximus vitae ex. Integer at nibh in massa viverra fringilla sit amet ac risus. Fusce arcu ante, dictum pharetra suscipit a, vehicula vel nisi.
+            <div class="description" id="description"> {{ description }}
             </div>
-            <button class="buy_sub">Kup</button>
+            <button-component
+                text="Kup pakiet"
+                icon-name="build-outline"
+                :onClick="buy"
+            />
+
         </div>
     </div>
 </template>
 
 <script setup>
+
+    const userId = ref('');
+    const description = ref('Lorem ipsum dolor sit amet');
+    const price = ref('0.00 zł');
+
+//    const packages = [
+//    {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
+//    {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
+//    ];
+
+    const packages = [
+    {name: 'Freezing b!ch3s', value: 0},
+    {name: 'Old but gold', value: 1}
+    ];
+
+
+
+    onMounted(() => {
+        const userDataString = sessionStorage.getItem('userData')
+        if(userDataString) {
+            const userData = JSON.parse(userDataString);
+            
+            userId.value = userData.id;
+        }
+    })
+    
+    const selectedSubscription = ref(packages.at(-1));
+
+    import {baseAPIURL} from '~/config/api.ts';
+    
+    const buy = async () => {
+        const selectedPkg = selectedSubscription.value;
+//        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/additionalPackages" {method: 'POST', body: {
+//            "type": "PDF",
+//            "creationDate": "2023-11-11",
+//            "packageType": packages[selectedPkg].name,
+//            "price": packages[selectedPkg].price,
+//            "gdriveLink": "gdriveLink"
+//        }})
+    }
+
+    watch(selectedSubscription, () => {
+        price.value = packages[selectedSubscription.value].price;
+        description.value = packages[selectedSubscription.value].description;
+    })
+
+
+
+
 </script>
 
 <style lang="scss" scoped>
