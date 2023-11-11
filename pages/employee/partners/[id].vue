@@ -9,7 +9,7 @@
         <div class="content">
             <profile-card
                 class="profile-card"
-                :nickname=partner.nickname
+                :nickname=partner.surname
                 :full-name="`${partner.name} ${partner.surname}`"
                 profile-picture-file="streamer1.jpg"
                 :verified="true"
@@ -108,6 +108,7 @@
 </template>
 
 <script setup>
+    import {baseAPIURL} from '../../../config/api.ts';
     const totalEarnings = ref('2 316 680 zł');
     const views = ref('297.5 tys.');
     const viewTime = ref('45 mln. h');
@@ -115,11 +116,8 @@
     const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
     const selectedMonth = ref(months.at(-1));
 
-    // const { id } = useRoute().params
-    // fetch data abot partner
-    // const { data: partner } = await useFetch(endpoint, { key: id})
-
-    const partner = {"id": 1, "name": "Michał", "surname": "Ziemiec", "nickname": "MikulembeZiemczyk123$$$"}
+    const { id } = useRoute().params
+    const { data: partner } = await useFetch(baseAPIURL + "/partners/" + id);
 </script>
 
 <style lang="scss" scoped>
