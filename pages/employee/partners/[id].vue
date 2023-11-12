@@ -213,7 +213,7 @@
         useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
             "endDate": endDate,
             "rate": rate,
-            "donationPercentage": donationPercentage,
+            "donationPercentage": donationPercentage
         }});
         
         editMode.value = false;
