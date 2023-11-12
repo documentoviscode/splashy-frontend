@@ -35,7 +35,7 @@
                 <div class="section-header">
                     <span>Umowa</span>
                 </div>
-                <div class="card">
+                <div class="card" v-if="!editMode">
                     <div class="section">
                         <span class="caption">Ważność umowy:</span>
                         <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
@@ -48,17 +48,27 @@
                         <span class="caption">Procent otrzymywanych dotacji:</span>
                         <span class="important">{{ donationPercentage }}%</span>
                     </div>
-                    <!-- <div class="buttons">
+                </div>
+                <div class="card" v-if="editMode">
+                    <div class="section">
+                        <span class="caption">Ważność umowy:</span>
+                        <span class="important"><input type="date" v-model="endDateString"></span>
+                    </div>
+                    <div class="section">
+                        <span class="caption">Stawka za godzinę oglądalności:</span>
+                        <span class="important"><input type="text" v-model="rate">zł</span>
+                    </div>
+                    <div class="section">
+                        <span class="caption">Procent otrzymywanych dotacji:</span>
+                        <span class="important"><input type="number" v-model="donationPercentage">%</span>
+                    </div>
+                    <div class="buttons">
                         <button-component
-                            text="Przedłuż umowę"
+                            text="Zapisz umowę"
                             icon-name="duplicate-outline"
+                            :on-click="saveContract"
                         />
-                        <button-component
-                            text="Rozwiąż umowę"
-                            icon-name="exit-outline"
-                            color="#dd3333"
-                        />
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="statistics">
@@ -118,6 +128,7 @@
 
     const contract = ref({});
     const endDate = ref();
+    const endDateString = ref('')
     const rate = ref();
     const donationPercentage = ref();
 
@@ -164,13 +175,15 @@
     });
 
     endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
+    endDateString.value = endDate.value.getFullYear() + '-' + (endDate.value.getMonth() + 1) + '-' + endDate.value.getDate();
+
     rate.value = contract?.value.rate;
     donationPercentage.value = contract?.value.donationPercentage;
 
     // get report
     const report = reports.value.find((report) => {
         const date = new Date(report.startDate);
-        return date.getMonth() === selectedMonth.value.value;
+        return date.getMonth() === selectedMonth.value.value - 1;
     });
 
     donations.value = report.donations + " PLN";
@@ -197,6 +210,20 @@
         viewTime.value = report.hoursWatched + " h";
         viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
     })
+
+    const editMode = ref(contract?.value.contractExtensionInProgress && !contract?.value.contractExtensionOfferVisible)
+    console.log('editmode')
+    console.log(editMode);
+    const saveContract = async () => {
+        endDate.value = new Date(endDateString.value)
+        useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
+            "endDate": endDate.value,
+            "rate": rate.value,
+            "donationPercentage": donationPercentage.value
+        }});
+        
+        editMode.value = false;
+    }
 </script>
 
 <style lang="scss" scoped>
