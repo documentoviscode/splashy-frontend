@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="section">
                         <span class="caption">Ważność umowy:</span>
-                        <span class="important">do {{ endDate }}r</span>
+                        <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
                     </div>
                     <div class="section">
                         <span class="caption">Stawka za godzinę oglądalności:</span>
@@ -161,7 +161,7 @@
                 return document.viewers !== undefined;
             });
 
-            endDate.value = new Date(contract?.value.endDate).toISOString().split('T')[0];
+            endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
             rate.value = contract?.value.rate;
             donationPercentage.value = contract?.value.donationPercentage;
 
