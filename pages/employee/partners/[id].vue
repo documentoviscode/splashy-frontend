@@ -175,7 +175,7 @@
     });
 
     endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
-    endDateString.value = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate();
+    endDateString.value = endDate.value.getFullYear() + '-' + (endDate.value.getMonth() + 1) + '-' + endDate.value.getDate();
 
     rate.value = contract?.value.rate;
     donationPercentage.value = contract?.value.donationPercentage;
@@ -217,7 +217,7 @@
 
     const editMode = ref(true)
     const saveContract = async () => {
-        endDate.value = new Date(endDateString)
+        endDate.value = new Date(endDateString.value)
         useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
             "endDate": endDate.value,
             "rate": rate.value,
