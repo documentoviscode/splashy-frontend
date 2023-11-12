@@ -38,15 +38,15 @@
                 <div class="card">
                     <div class="section">
                         <span class="caption">Ważność umowy:</span>
-                        <span class="important">do 21.12.2023r</span>
+                        <span class="important">do {{ endDate }}r</span>
                     </div>
                     <div class="section">
                         <span class="caption">Stawka za godzinę oglądalności:</span>
-                        <span class="important">0,03 zł</span>
+                        <span class="important">{{ rate }} zł</span>
                     </div>
                     <div class="section">
                         <span class="caption">Procent otrzymywanych dotacji:</span>
-                        <span class="important">70%</span>
+                        <span class="important">{{ donationPercentage }}%</span>
                     </div>
                     <div class="buttons">
                         <button-component
@@ -111,12 +111,18 @@
 
 <script setup>
     import {baseAPIURL} from "~/config/api.ts";
+    import {end} from "@popperjs/core";
 
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
     const profilePicture = ref('');
     const user = ref(null);
+
+    const contract = ref({});
+    const endDate = ref();
+    const rate = ref();
+    const donationPercentage = ref();
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
@@ -129,6 +135,15 @@
             profilePicture.value = userData.avatar;
 
             user.value = userData;
+
+            contract.value = user.value.documents.filter((document) => {
+                return (document.rate !== undefined);
+            })[0];
+            console.log(contract.value);
+
+            endDate.value = new Date(contract?.value.endDate).toISOString().split('T')[0];
+            rate.value = contract?.value.rate;
+            donationPercentage.value = contract?.value.donationPercentage;
         }
     });
 
@@ -142,12 +157,7 @@
     const extendContractTextVisible = ref(false);
 
     const extendContract = async () => {
-
-        const contract = user.value.documents.filter((document) => {
-            return (document.rate === undefined);
-        })[0];
-
-        useFetch(baseAPIURL + `/tasks/create/${user?.value.id}/${contract.id}`,  {method: 'POST'});
+        useFetch(baseAPIURL + `/tasks/create/${user?.value.id}/${contract?.value.id}`,  {method: 'POST'});
 
         extendContractTextVisible.value = true;
 
