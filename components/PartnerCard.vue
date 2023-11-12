@@ -15,6 +15,7 @@
                             text="Tak - edytuj umowę"
                             icon-name="create-outline"
                             class="button"
+                            :on-click="navToPartner"
                         />
                         <button-component
                             text="Nie - wyślij ofertę do klienta"
