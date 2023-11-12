@@ -52,6 +52,7 @@
                         <button-component
                             text="Przedłuż umowę"
                             icon-name="duplicate-outline"
+                            :on-click="extendContract"
                         />
                         <button-component
                             text="Rozwiąż umowę"
@@ -59,6 +60,7 @@
                             color="#dd3333"
                         />
                     </div>
+                    <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
                 </div>
             </div>
             <div class="statistics">
@@ -108,10 +110,13 @@
 </template>
 
 <script setup>
+    import {baseAPIURL} from "~/config/api.ts";
+
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
     const profilePicture = ref('');
+    const user = ref(null);
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
@@ -122,6 +127,8 @@
             surname.value = userData.surname;
             nickname.value = userData.nickname;
             profilePicture.value = userData.avatar;
+
+            user.value = userData;
         }
     });
 
@@ -131,6 +138,21 @@
 
     const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
     const selectedMonth = ref(months.at(-1));
+
+    const extendContractTextVisible = ref(false);
+
+    const extendContract = async () => {
+
+        const contract = user.value.documents.filter((document) => {
+            return (document.rate === undefined);
+        })[0];
+
+        useFetch(baseAPIURL + `/tasks/create/${user?.value.id}/${contract.id}`,  {method: 'POST'});
+
+        extendContractTextVisible.value = true;
+
+        setTimeout(() => {extendContractTextVisible.value = false}, 5000);
+    }
 
 </script>
 
@@ -229,6 +251,12 @@
             margin-top: 1em;
             display: flex;
             gap: 1em;
+        }
+
+        & > span {
+            font-size: 1.4em;
+            margin-top: 1em;
+            color: $secondary400;
         }
     }
 
