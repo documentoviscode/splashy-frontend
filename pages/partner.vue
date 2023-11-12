@@ -193,7 +193,7 @@
     watch(selectedMonth, () => {
         const report = reports.value.find((report) => {
             const date = new Date(report.startDate);
-            return date.getMonth() === selectedMonth.value.value;
+            return date.getMonth() === selectedMonth.value.value - 1;
         });
 
         if(!report || !contract) {
