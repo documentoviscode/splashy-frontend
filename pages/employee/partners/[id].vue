@@ -52,7 +52,7 @@
                 <div class="card" v-if="editMode">
                     <div class="section">
                         <span class="caption">Ważność umowy:</span>
-                        <span class="important"><input type="date" v-model="endDate"></span>
+                        <span class="important"><input type="date" v-model="endDateString"></span>
                     </div>
                     <div class="section">
                         <span class="caption">Stawka za godzinę oglądalności:</span>
@@ -128,6 +128,7 @@
 
     const contract = ref({});
     const endDate = ref();
+    const endDateString = ref('')
     const rate = ref();
     const donationPercentage = ref();
 
@@ -174,6 +175,8 @@
     });
 
     endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
+    endDateString.value = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate();
+
     rate.value = contract?.value.rate;
     donationPercentage.value = contract?.value.donationPercentage;
 
@@ -208,12 +211,17 @@
         viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
     })
 
+    watch(endDate, () => {
+        console.log(endDate);
+    })
+
     const editMode = ref(true)
     const saveContract = async () => {
+        endDate.value = new Date(endDateString)
         useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
-            "endDate": endDate,
-            "rate": rate,
-            "donationPercentage": donationPercentage
+            "endDate": endDate.value,
+            "rate": rate.value,
+            "donationPercentage": donationPercentage.value
         }});
         
         editMode.value = false;
