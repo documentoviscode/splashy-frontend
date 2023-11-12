@@ -11,7 +11,7 @@
                 class="profile-card"
                 :nickname="nickname"
                 :full-name="name + ' ' + surname"
-                profile-picture-file="streamer1.jpg"
+                :profile-picture-file="profilePicture"
                 :verified="true"
             />
             <div class="brief-statistics">
@@ -108,11 +108,10 @@
 </template>
 
 <script setup>
-    import ZBClient from "zeebe-node";
-
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
+    const profilePicture = ref('');
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
@@ -121,7 +120,8 @@
 
             name.value = userData.name;
             surname.value = userData.surname;
-            nickname.value = userData.email.split('@')[0];
+            nickname.value = userData.nickname;
+            profilePicture.value = userData.avatar;
         }
     });
 
@@ -131,8 +131,6 @@
 
     const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
     const selectedMonth = ref(months.at(-1));
-
-    const zeebeClient = new ZBClient();
 
 </script>
 
