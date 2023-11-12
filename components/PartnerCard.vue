@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="`/employee/partners/${partner.id}`" class="link">
+    <div @click="navToPartner" class="link">
         <div class="partners-container">
             <div class="profile-picture">
                 <img :src="`/profilePictures/${partner.avatar}`" alt="profile photo" class="rounded-image">
@@ -21,6 +21,7 @@
                             icon-name="checkbox-outline"
                             color="#2056bd"
                             class="button"
+                            :on-click="sendOffer"
                         />
                     </div>
                 </div>
@@ -29,13 +30,28 @@
                 </div>
             </div>
         </div>
-    </NuxtLink>
+    </div>
 </template>
 
 <script setup>
+    import {baseAPIURL} from "../config/api.ts";
+    import {navigateTo} from "#app";
+
     const { partner } = defineProps(['partner']);
 
     const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress);
+
+    const sendOffer = async () => {
+        useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
+
+        extendContractTextVisible.value = true;
+
+        setTimeout(() => {extendContractTextVisible.value = false}, 5000);
+    }
+
+    const navToPartner = async () => {
+        await navigateTo(`/employee/partners/${partner.id}`);
+    }
 
 </script>
 
@@ -57,6 +73,12 @@
     & > img {
         border-radius: 50%;
         width: 8em;
+    }
+}
+
+.link {
+    &:hover {
+        cursor: pointer;
     }
 }
 
