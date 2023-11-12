@@ -7,15 +7,6 @@
             <h1>Panel pracownika</h1>
         </div>
         <div class="content">
-            <div class="filtering-form">
-                <form>
-                    <input class="form-input" type="text" placeholder="Imię">
-                    <input class="form-input" type="text" placeholder="Nazwisko">
-                    <div class="buttons">
-                        <button-component text="Filtruj" />
-                    </div>
-                </form>
-            </div>
             <div class="partners-cards">
                 <div v-for="p in partners">
                 <PartnerCard :partner="p" />
