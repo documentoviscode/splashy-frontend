@@ -20,12 +20,24 @@
 </template>
 
 <script setup>
-    import {baseAPIURL} from '../../../config/api.ts';
-    const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
+import {baseAPIURL} from '../../../config/api.ts';
+
+const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
     const partners = ref([]);
    
     onMounted(() => {
         partners.value = data.value;
+
+        partners.value.forEach(partner => {
+            partner['contract'] = partner.documents.filter((document) => {
+                return (document.rate !== undefined);
+            }).sort((item1, item2) => {
+                const date1 = new Date(item1.endDate);
+                const date2 = new Date(item2.endDate);
+
+                return date1 > date2;
+            }).at(-1);
+        });
     });
 
 </script>
@@ -35,10 +47,10 @@
         display: flex;
         flex-direction: column;
         font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
+        height: 100vh;
     }
     .header {
             display: flex;
-            flex: 1;
             align-items: center;
             background-color: $primary600;
 
@@ -64,7 +76,6 @@
     .footer {
         display: flex;
         flex-direction: column;
-        flex: 1;
         background-color: $background600;
         padding: 2em 4em;
 

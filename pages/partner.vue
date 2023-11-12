@@ -168,8 +168,9 @@
             // get report
             const report = reports.value.find((report) => {
                 const date = new Date(report.startDate);
-                return date.getMonth() === selectedMonth.value.value;
+                return date.getMonth() === selectedMonth.value.value - 1;
             });
+            console.log(reports);
 
             donations.value = report.donations + " PLN";
             views.value = report.viewers;
