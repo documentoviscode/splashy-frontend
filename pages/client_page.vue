@@ -25,7 +25,7 @@
                     <div class="balance_state">
                         Twój kolejny rachunek w dniu <strong>{{ nextBillingDate.toISOString().substring(0, 10) }}</strong> wynosi <strong>{{ subscription.monthlyRate }} zł</strong>.
                     </div>
-                    <div class="bundles_label">Pakiety dodatkowe</div>
+                    <div v-if="packages.length > 0" class="bundles_label">Pakiety dodatkowe</div>
                     <div class="bundles">
                         <div v-for="p in packages">
                             <div class="bundle">{{ p.packageType }}</div>
@@ -74,7 +74,6 @@
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
             const userData = JSON.parse(userDataString);
-            console.log(userData);
 
             name.value = userData.name;
             surname.value = userData.surname;
@@ -83,8 +82,10 @@
             cardNumber.value = userData.creditCard.number;
             cardExpirationDate.value = userData.creditCard.expirationDate;
 
-            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id, {
-            })
+            await nextTick();
+
+            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id)
+            console.log(userData)
             packages.value = data.value.documents.filter((document) => {
                 return !document.period
             })
@@ -96,7 +97,6 @@
             nextBillingDate.value = new Date(subscription.value.startDate)
             nextBillingDate.value.setHours(12);
             nextBillingDate.value.setMonth(nextBillingDate.value.getMonth() + 1);
-            console.log()
         }
     });
     const goToBuySubscription = async () => {
