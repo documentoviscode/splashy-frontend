@@ -4,14 +4,14 @@
             <div class="header">Wybierz pakiet:</div>
             <USelectMenu
                 v-model="selectedSubscription"
-                :options="packages"
+                :options="packagesToBuy"
                 size="xl"
                 color="#3770dd"
                 option-attribute="name"
             />
-            <div class="price">Cena: <strong id="price">{{ selectedSubscription.price }}</strong></div>
+            <div class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }}</strong></div>
             <div class="period">Czas: na zawsze</div>
-            <div class="description" id="description"> {{ selectedSubscription.description }}
+            <div class="description" id="description"> {{ selectedSubscription?.description ?? 'Witam' }}
             </div>
             <button-component
                 text="Kup pakiet"
@@ -24,25 +24,44 @@
 </template>
 
 <script setup>
+    import {baseAPIURL} from '~/config/api.ts';
 
     const userId = ref('');
     const buyText = ref('');
+    const usersPackages = ref([])
+    const packagesToBuy = ref([])
 
     const packages = [
     {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
     {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
     ];
 
-    onMounted(() => {
+    onMounted(async () => {
         const userDataString = sessionStorage.getItem('userData')
         if(userDataString) {
             const userData = JSON.parse(userDataString);
             
             userId.value = userData.id;
+
+            await nextTick();
+
+            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id)
+            console.log(data)
+            usersPackages.value = data.value.documents.filter((document) => {
+                return (document.period === undefined)
+            })
+
+            console.log(usersPackages)
+            const packagesNames = usersPackages.value.map(pkg => pkg.packageType);
+            console.log(packagesNames)
+            packagesToBuy.value = packages.filter((p) => {
+                return !packagesNames.includes(p.name);
+            })
+            console.log(packagesToBuy)
         }
     })
     
-    const selectedSubscription = ref(packages.at(0));
+    const selectedSubscription = ref(packagesToBuy[0]);
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -56,8 +75,7 @@
     // Example usage
     const currentDate = getCurrentDate();
 
-    import {baseAPIURL} from '~/config/api.ts';
-    
+
     const buy = async () => {
         const selectedPkg = selectedSubscription.value.value;
         const {data,pending,error,refresh, status} = await useFetch(baseAPIURL + "/additionalPackages?userId=" + userId.value, {method: 'POST', body: {

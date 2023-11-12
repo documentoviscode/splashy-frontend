@@ -23,7 +23,7 @@
                 <div class="subscriptions">
                     <div class="subscriptions_header">Subskrypcja i pakiety dodatkowe</div>
                     <div class="balance_state">
-                        Twój kolejny rachunek w dniu <strong>{{ nextBillingDate.toISOString().substring(0, 10) }}</strong> wynosi <strong>{{ subscription.monthlyRate }} zł</strong>.
+                        Twój kolejny rachunek w dniu <strong>{{ nextBillingDate.toISOString().substring(0, 10) }}</strong> wynosi <strong>{{subscription.monthlyRate}} zł</strong>.
                     </div>
                     <div v-if="packages.length > 0" class="bundles_label">Pakiety dodatkowe</div>
                     <div class="bundles">
@@ -85,14 +85,15 @@
             await nextTick();
 
             const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id)
-            console.log(userData)
+            console.log(data.value)
             packages.value = data.value.documents.filter((document) => {
-                return !document.period
+                return (document.period === undefined)
             })
             subscriptionList.value = data.value.documents.filter((document) => {
-                return document.period
+                return !(document.period === undefined)
             })
-
+            console.log(packages.value)
+            console.log(subscriptionList.value)
             subscription.value = subscriptionList.value[0];
             nextBillingDate.value = new Date(subscription.value.startDate)
             nextBillingDate.value.setHours(12);
