@@ -9,16 +9,16 @@
                 color="#3770dd"
                 option-attribute="name"
             />
-            <div class="price">Cena: <strong id="price">{{ price }}</strong></div>
-            <div class="period">Czas: miesięcznie/na zawsze</div>
-            <div class="description" id="description"> {{ description }}
+            <div class="price">Cena: <strong id="price">{{ selectedSubscription.price }}</strong></div>
+            <div class="period">Czas: na zawsze</div>
+            <div class="description" id="description"> {{ selectedSubscription.description }}
             </div>
             <button-component
                 text="Kup pakiet"
                 icon-name="build-outline"
                 :onClick="buy"
             />
-                <span style="color: red; text-align: center; font-size: 24px;"><b>{{ buyText }}</b></span>
+                <span class="buy_text">{{ buyText }}</span>
         </div>
     </div>
 </template>
@@ -26,8 +26,6 @@
 <script setup>
 
     const userId = ref('');
-    const description = ref('Lorem ipsum dolor sit amet');
-    const price = ref('0.00 zł');
     const buyText = ref('');
 
     const packages = [
@@ -44,7 +42,7 @@
         }
     })
     
-    const selectedSubscription = ref(packages.at(-1));
+    const selectedSubscription = ref(packages.at(0));
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -74,15 +72,10 @@
         } else {
             buyText.value = 'Nie udało się zakupić pakietu!'
         }
+        setTimeout(async () => {
+            await navigateTo('/client_page')
+        }, 2500)
     }
-
-    watch(selectedSubscription, () => {
-          price.value = packages[selectedSubscription.value.value].price;
-          description.value = packages[selectedSubscription.value.value].description;
-    })
-
-
-
 
 </script>
 
@@ -136,5 +129,12 @@
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
+}
+
+.buy_text {
+    color: $secondary400;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
 }
 </style>
