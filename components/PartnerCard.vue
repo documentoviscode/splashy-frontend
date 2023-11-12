@@ -25,6 +25,12 @@
                             :on-click="sendOffer"
                         />
                     </div>
+                    <span class="sent" v-if="extendContractTextVisible">Wysłano ofertę do klienta</span>
+                </div>
+
+
+                <div v-if="contractExtensionInProgress" class="notification-text">
+                    <span>Prośba o przedłużenie umowy</span>
                 </div>
                 <div class="notification" v-if="contractExtensionInProgress">
                     <Icon class="icon" name="ion:notifications-outline" size="30"/>
@@ -41,6 +47,7 @@
     const { partner } = defineProps(['partner']);
 
     const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress);
+    const extendContractTextVisible = ref(false);
 
     const sendOffer = async () => {
         useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
@@ -113,6 +120,12 @@
             gap: 0.6em;
             height: 3em;
         }
+
+        & > .sent {
+            font-size: 1.2em;
+            color: $secondary400;
+            margin-top: 1.4em;
+        }
     }
 }
 
@@ -128,4 +141,18 @@
     justify-content: center;
     border-radius: 50%;
 }
+
+.notification-text {
+    position: absolute;
+    top: 0;
+    right: 3em;
+    height: 2.4em;
+    display: flex;
+    align-items: center;
+
+    & > span {
+        font-size: 0.8em;
+    }
+}
+
 </style>

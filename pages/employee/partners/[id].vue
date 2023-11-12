@@ -211,11 +211,9 @@
         viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
     })
 
-    watch(endDate, () => {
-        console.log(endDate);
-    })
-
-    const editMode = ref(true)
+    const editMode = ref(contract?.value.contractExtensionInProgress && !contract?.value.contractExtensionOfferVisible)
+    console.log('editmode')
+    console.log(editMode);
     const saveContract = async () => {
         endDate.value = new Date(endDateString.value)
         useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
