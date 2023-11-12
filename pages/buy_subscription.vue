@@ -1,48 +1,82 @@
 <template>
     <div class="main-container">
         <div class="sub_form">
+            <div class="button-container">
+                <button-component
+                    text="Powrót"
+                    :on-click="navigateBack"
+                />
+            </div>
             <div class="header">Wybierz pakiet:</div>
             <USelectMenu
+                v-if="!allPackagesBought"
                 v-model="selectedSubscription"
-                :options="packages"
+                :options="packagesToBuy"
                 size="xl"
                 color="#3770dd"
                 option-attribute="name"
             />
-            <div class="price">Cena: <strong id="price">{{ selectedSubscription.price }}</strong></div>
-            <div class="period">Czas: na zawsze</div>
-            <div class="description" id="description"> {{ selectedSubscription.description }}
-            </div>
+            <div v-if="!allPackagesBought" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }}</strong></div>
+            <div v-if="!allPackagesBought" class="period">Czas: na zawsze</div>
+            <div v-if="!allPackagesBought" class="description" id="description"> {{ selectedSubscription?.description ?? 'Witam' }}</div>
             <button-component
+                v-if="!allPackagesBought"
                 text="Kup pakiet"
                 icon-name="build-outline"
                 :onClick="buy"
             />
-                <span class="buy_text">{{ buyText }}</span>
+            <span v-if="!allPackagesBought" class="buy_text">{{ buyText }}</span>
+            <div class="all_packages_bought" v-if="allPackagesBought">
+                <span>Kupiłeś wszystkie pakiety! Gratulacje 😏😏</span>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
+    import {baseAPIURL} from '~/config/api.ts';
+    import {navigateTo} from "#app";
 
     const userId = ref('');
     const buyText = ref('');
+    const usersPackages = ref([])
+    const packagesToBuy = ref([])
+
+    const allPackagesBought = ref(false);
 
     const packages = [
-    {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
-    {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
+        {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
+        {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
     ];
 
-    onMounted(() => {
+    onMounted(async () => {
         const userDataString = sessionStorage.getItem('userData')
         if(userDataString) {
             const userData = JSON.parse(userDataString);
             
             userId.value = userData.id;
+
+            await nextTick();
+
+            const {data} = await useFetch(baseAPIURL + '/users/' + userData.id);
+            usersPackages.value = data.value.documents.filter((document) => {
+                return (document.period === undefined)
+            })
+
+            const packagesNames = usersPackages.value.map(pkg => pkg.packageType);
+            packagesToBuy.value = packages.filter((p) => {
+                return !packagesNames.includes(p.name);
+            })
         }
-    })
+    });
+
+    watch(packagesToBuy, () => {
+        if (packagesToBuy.value.length <= 0) {
+            allPackagesBought.value = true;
+        }
+    });
     
-    const selectedSubscription = ref(packages.at(0));
+    const selectedSubscription = ref(packagesToBuy[0]);
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -53,11 +87,6 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Example usage
-    const currentDate = getCurrentDate();
-
-    import {baseAPIURL} from '~/config/api.ts';
-    
     const buy = async () => {
         const selectedPkg = selectedSubscription.value.value;
         const {data,pending,error,refresh, status} = await useFetch(baseAPIURL + "/additionalPackages?userId=" + userId.value, {method: 'POST', body: {
@@ -75,6 +104,10 @@
         setTimeout(async () => {
             await navigateTo('/client_page')
         }, 2500)
+    }
+
+    const navigateBack = async () => {
+        await navigateTo('/client_page');
     }
 
 </script>
@@ -98,6 +131,17 @@
     padding: 40px 60px;
     background-color: $background400;
     border-radius: 10px;
+
+    & > .all_packages_bought > span {
+        font-size: 2em;
+    }
+
+    & > .button-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 8em;
+    }
 }
 
 .sub_form > div {
