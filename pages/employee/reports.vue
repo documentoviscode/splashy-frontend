@@ -64,50 +64,70 @@
     const viewTimeEarnings = ref('0 PLN')
 
     const months = [
-    {name: 'Czerwiec 2023', value: 6},
-    {name: 'Lipiec 2023', value: 7},
-    {name: 'Sierpień 2023', value: 8},
-    {name: 'Wrzesień 2023', value: 9},
-    {name: 'Październik 2023', value: 10},
-    {name: 'Listopad 2023', value: 11},
+        {name: 'Czerwiec 2023', value: 6},
+        {name: 'Lipiec 2023', value: 7},
+        {name: 'Sierpień 2023', value: 8},
+        {name: 'Wrzesień 2023', value: 9},
+        {name: 'Październik 2023', value: 10},
+        {name: 'Listopad 2023', value: 11},
     ]
     const selectedMonth = ref(months.at(-1));
 
-    import {baseAPIURL} from '../../config/api.ts';
+    import {baseAPIURL} from '~/config/api.ts';
 
     onMounted(() => {
-        const report = reports.find((report) => {
-            return report.startDate[1] == selectedMonth.value.value; 
+        const filteredReports = reports.filter((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1;
         });
 
-        if(!report) {
+        if(!filteredReports) {
             donations.value =  "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
-        } 
+        }
 
-        donations.value = report.donations + " PLN";
-        views.value = report.viewers;
-        viewTime.value = report.hoursWatched + " h";
+        let donationsNum = 0;
+        let viewsNum = 0;
+        let viewTimeNum = 0;
+        filteredReports.forEach(item => {
+            donationsNum += item.donations;
+            viewsNum += item.viewers;
+            viewTimeNum += item.hoursWatched;
+        });
+
+        donations.value = donationsNum + " PLN";
+        views.value = viewsNum;
+        viewTime.value = viewTimeNum + " h";
     });
 
 
     watch(selectedMonth, () => {
-        const report = reports.find((report) => {
-            return report.startDate[1] == selectedMonth.value.value; 
+        const filteredReports = reports.filter((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1;
         });
 
-        if(!report) {
+        if(!filteredReports) {
             donations.value =  "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
-        } 
+        }
 
-        donations.value = report.donations + " PLN";
-        views.value = report.viewers;
-        viewTime.value = report.hoursWatched + " h";
+        let donationsNum = 0;
+        let viewsNum = 0;
+        let viewTimeNum = 0;
+        filteredReports.forEach(item => {
+            donationsNum += item.donations;
+            viewsNum += item.viewers;
+            viewTimeNum += item.hoursWatched;
+        });
+
+        donations.value = Math.floor(donationsNum) + " PLN";
+        views.value = viewsNum;
+        viewTime.value = viewTimeNum + " h";
     })
 
 

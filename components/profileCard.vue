@@ -14,7 +14,10 @@ export default defineComponent({
         verified: {
             type: Boolean,
             default: false,
-        }
+        },
+        profilePictureFile: {
+            type: String,
+        },
     },
 })
 </script>
@@ -31,7 +34,7 @@ export default defineComponent({
                 <span class="fullname">{{ fullName }}</span>
             </div>
             <div class="profile-pic">
-                <img src="@/assets/profilePictures/streamer1.jpg" alt="profile picture">
+                <img :src="`/profilePictures/${profilePictureFile}`" alt="profile picture">
             </div>
         </div>
     </div>
@@ -89,7 +92,7 @@ export default defineComponent({
         justify-content: center;
 
         & > img {
-            width: 70%;
+            width: 12em;
             border-radius: 200em;
         }
     }

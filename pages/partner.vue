@@ -11,12 +11,12 @@
                 class="profile-card"
                 :nickname="nickname"
                 :full-name="name + ' ' + surname"
-                profile-picture-file="streamer1.jpg"
+                :profile-picture-file="profilePicture"
                 :verified="true"
             />
             <div class="brief-statistics">
                 <info-card
-                    :data="views"
+                    :data="totalViews"
                     icon-name="person-outline"
                     caption="Wyświetlenia"
                 />
@@ -26,7 +26,7 @@
                     caption="Zarobki"
                 />
                 <info-card
-                    :data="viewTime"
+                    :data="totalViewTime"
                     icon-name="time-outline"
                     caption="Suma oglądalności"
                 />
@@ -38,27 +38,30 @@
                 <div class="card">
                     <div class="section">
                         <span class="caption">Ważność umowy:</span>
-                        <span class="important">do 21.12.2023r</span>
+                        <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
                     </div>
                     <div class="section">
                         <span class="caption">Stawka za godzinę oglądalności:</span>
-                        <span class="important">0,03 zł</span>
+                        <span class="important">{{ rate }} zł</span>
                     </div>
                     <div class="section">
                         <span class="caption">Procent otrzymywanych dotacji:</span>
-                        <span class="important">70%</span>
+                        <span class="important">{{ donationPercentage }}%</span>
                     </div>
                     <div class="buttons">
                         <button-component
                             text="Przedłuż umowę"
                             icon-name="duplicate-outline"
+                            :on-click="extendContract"
                         />
                         <button-component
                             text="Rozwiąż umowę"
                             icon-name="exit-outline"
                             color="#dd3333"
+                            :on-click="navigateBack"
                         />
                     </div>
+                    <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
                 </div>
             </div>
             <div class="statistics">
@@ -72,28 +75,29 @@
                         :options="months"
                         size="xl"
                         color="#3770dd"
+                        option-attribute="name"
                     />
 
                     <div class="section">
                         <span class="caption">Suma godzin oglądalności:</span>
-                        <span class="important">163200 h</span>
+                        <span class="important">{{ viewTime }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Suma dotacji:</span>
-                        <span class="important">84 510 zł</span>
+                        <span class="important">{{ donations }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Liczba unikalnych widzów:</span>
-                        <span class="important">23 452</span>
+                        <span class="important">{{ views }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Zarobek za oglądalność:</span>
-                        <span class="important">4 896 zł</span>
+                        <span class="important">{{ viewTimeEarnings }} zł</span>
                     </div>
 
                     <div class="buttons small">
                         <button-component
-                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth}`"
+                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
                         />
@@ -108,31 +112,116 @@
 </template>
 
 <script setup>
+    import {baseAPIURL} from "~/config/api.ts";
+    import {navigateTo} from "#app";
 
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
+    const profilePicture = ref('');
+    const user = ref(null);
+
+    const contract = ref({});
+    const endDate = ref();
+    const rate = ref();
+    const donationPercentage = ref();
+
+    const totalEarnings = ref('2 316 680 zł');
+    const totalViews = ref('297.5 tys.');
+    const totalViewTime = ref('45 mln. h');
+
+    const reports = ref([]);
+    const donations = ref('0 PLN');
+    const views = ref('0');
+    const viewTime = ref('0 h');
+    const viewTimeEarnings = ref('0 PLN');
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
             const userData = JSON.parse(userDataString);
-            console.log(userData);
 
             name.value = userData.name;
             surname.value = userData.surname;
-            nickname.value = userData.email.split('@')[0];
+            nickname.value = userData.nickname;
+            profilePicture.value = userData.avatar;
+
+            user.value = userData;
+
+            contract.value = user.value.documents.filter((document) => {
+                return (document.rate !== undefined);
+            }).sort((item1, item2) => {
+                const date1 = new Date(item1.endDate);
+                const date2 = new Date(item2.endDate);
+
+                return date1 > date2;
+            }).at(-1);
+
+            reports.value = user.value.documents.filter(document => {
+                return document.viewers !== undefined;
+            });
+
+            endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
+            rate.value = contract?.value.rate;
+            donationPercentage.value = contract?.value.donationPercentage;
+
+            // get report
+            const report = reports.value.find((report) => {
+                const date = new Date(report.startDate);
+                return date.getMonth() === selectedMonth.value.value;
+            });
+
+            donations.value = report.donations + " PLN";
+            views.value = report.viewers;
+            viewTime.value = report.hoursWatched + " h";
+            viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
         }
     });
 
+    const months = [
+        {name: 'Czerwiec 2023', value: 6},
+        {name: 'Lipiec 2023', value: 7},
+        {name: 'Sierpień 2023', value: 8},
+        {name: 'Wrzesień 2023', value: 9},
+        {name: 'Październik 2023', value: 10},
+        {name: 'Listopad 2023', value: 11},
+    ]
+    const selectedMonth = ref(months.at(-2));
 
+    const extendContractTextVisible = ref(false);
 
-    const totalEarnings = ref('2 316 680 zł');
-    const views = ref('297.5 tys.');
-    const viewTime = ref('45 mln. h');
+    watch(selectedMonth, () => {
+        const report = reports.value.find((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1;
+        });
 
-    const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
-    const selectedMonth = ref(months.at(-1));
+        if(!report || !contract) {
+            donations.value =  "0 PLN";
+            views.value = "0";
+            viewTime.value = "0 h"
+            viewTimeEarnings.value = '0';
+            return;
+        }
+
+        donations.value = report.donations + " PLN";
+        views.value = report.viewers;
+        viewTime.value = report.hoursWatched + " h";
+        viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
+    })
+
+    const extendContract = async () => {
+        useFetch(baseAPIURL + `/tasks/create/${user?.value.id}/${contract?.value.id}`,  {method: 'POST'});
+
+        extendContractTextVisible.value = true;
+
+        setTimeout(() => {extendContractTextVisible.value = false}, 5000);
+    }
+
+    const navigateBack = () => {
+        setTimeout(async () => {await navigateTo('/')}, 1000);
+    }
+
 </script>
 
 <style lang="scss" scoped>
@@ -230,6 +319,12 @@
             margin-top: 1em;
             display: flex;
             gap: 1em;
+        }
+
+        & > span {
+            font-size: 1.4em;
+            margin-top: 1em;
+            color: $secondary400;
         }
     }
 

@@ -56,6 +56,7 @@
 
         &:hover {
             filter: brightness(0.85);
+            cursor: pointer;
         }
 
         &:active {
