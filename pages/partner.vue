@@ -16,7 +16,7 @@
             />
             <div class="brief-statistics">
                 <info-card
-                    :data="views"
+                    :data="totalViews"
                     icon-name="person-outline"
                     caption="Wyświetlenia"
                 />
@@ -26,7 +26,7 @@
                     caption="Zarobki"
                 />
                 <info-card
-                    :data="viewTime"
+                    :data="totalViewTime"
                     icon-name="time-outline"
                     caption="Suma oglądalności"
                 />
@@ -74,28 +74,29 @@
                         :options="months"
                         size="xl"
                         color="#3770dd"
+                        option-attribute="name"
                     />
 
                     <div class="section">
                         <span class="caption">Suma godzin oglądalności:</span>
-                        <span class="important">163200 h</span>
+                        <span class="important">{{ viewTime }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Suma dotacji:</span>
-                        <span class="important">84 510 zł</span>
+                        <span class="important">{{ donations }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Liczba unikalnych widzów:</span>
-                        <span class="important">23 452</span>
+                        <span class="important">{{ views }}</span>
                     </div>
                     <div class="section">
                         <span class="caption">Zarobek za oglądalność:</span>
-                        <span class="important">4 896 zł</span>
+                        <span class="important">{{ viewTimeEarnings }} zł</span>
                     </div>
 
                     <div class="buttons small">
                         <button-component
-                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth}`"
+                            :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
                         />
@@ -111,7 +112,6 @@
 
 <script setup>
     import {baseAPIURL} from "~/config/api.ts";
-    import {end} from "@popperjs/core";
 
     const name = ref('');
     const surname = ref('');
@@ -123,6 +123,16 @@
     const endDate = ref();
     const rate = ref();
     const donationPercentage = ref();
+
+    const totalEarnings = ref('2 316 680 zł');
+    const totalViews = ref('297.5 tys.');
+    const totalViewTime = ref('45 mln. h');
+
+    const reports = ref([]);
+    const donations = ref('0 PLN');
+    const views = ref('0');
+    const viewTime = ref('0 h');
+    const viewTimeEarnings = ref('0 PLN');
 
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
@@ -138,23 +148,65 @@
 
             contract.value = user.value.documents.filter((document) => {
                 return (document.rate !== undefined);
-            })[0];
-            console.log(contract.value);
+            }).sort((item1, item2) => {
+                const date1 = new Date(item1.endDate);
+                const date2 = new Date(item2.endDate);
+
+                return date1 > date2;
+            }).at(-1);
+
+            reports.value = user.value.documents.filter(document => {
+                return document.viewers !== undefined;
+            });
 
             endDate.value = new Date(contract?.value.endDate).toISOString().split('T')[0];
             rate.value = contract?.value.rate;
             donationPercentage.value = contract?.value.donationPercentage;
+
+            // get report
+            const report = reports.value.find((report) => {
+                const date = new Date(report.startDate);
+                return date.getMonth() === selectedMonth.value.value;
+            });
+
+            donations.value = report.donations + " PLN";
+            views.value = report.viewers;
+            viewTime.value = report.hoursWatched + " h";
+            viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
         }
     });
 
-    const totalEarnings = ref('2 316 680 zł');
-    const views = ref('297.5 tys.');
-    const viewTime = ref('45 mln. h');
-
-    const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
-    const selectedMonth = ref(months.at(-1));
+    const months = [
+        {name: 'Czerwiec 2023', value: 6},
+        {name: 'Lipiec 2023', value: 7},
+        {name: 'Sierpień 2023', value: 8},
+        {name: 'Wrzesień 2023', value: 9},
+        {name: 'Październik 2023', value: 10},
+        {name: 'Listopad 2023', value: 11},
+    ]
+    const selectedMonth = ref(months.at(-2));
 
     const extendContractTextVisible = ref(false);
+
+    watch(selectedMonth, () => {
+        const report = reports.value.find((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value;
+        });
+
+        if(!report || !contract) {
+            donations.value =  "0 PLN";
+            views.value = "0";
+            viewTime.value = "0 h"
+            viewTimeEarnings.value = '0';
+            return;
+        }
+
+        donations.value = report.donations + " PLN";
+        views.value = report.viewers;
+        viewTime.value = report.hoursWatched + " h";
+        viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
+    })
 
     const extendContract = async () => {
         useFetch(baseAPIURL + `/tasks/create/${user?.value.id}/${contract?.value.id}`,  {method: 'POST'});

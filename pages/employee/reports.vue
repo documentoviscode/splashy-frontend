@@ -64,16 +64,16 @@
     const viewTimeEarnings = ref('0 PLN')
 
     const months = [
-    {name: 'Czerwiec 2023', value: 6},
-    {name: 'Lipiec 2023', value: 7},
-    {name: 'Sierpień 2023', value: 8},
-    {name: 'Wrzesień 2023', value: 9},
-    {name: 'Październik 2023', value: 10},
-    {name: 'Listopad 2023', value: 11},
+        {name: 'Czerwiec 2023', value: 6},
+        {name: 'Lipiec 2023', value: 7},
+        {name: 'Sierpień 2023', value: 8},
+        {name: 'Wrzesień 2023', value: 9},
+        {name: 'Październik 2023', value: 10},
+        {name: 'Listopad 2023', value: 11},
     ]
     const selectedMonth = ref(months.at(-1));
 
-    import {baseAPIURL} from '../../config/api.ts';
+    import {baseAPIURL} from '~/config/api.js';
 
     onMounted(() => {
         const report = reports.find((report) => {
