@@ -33,12 +33,13 @@
                 </div>
             </div>
             <div class="buttons">
-                <div class="client_manage_button">
-                    <div>Zarządzaj swoim panelem</div>
-                </div>
-                <div class="client_edit_button">
-                    <div>Edytuj dane konta</div>
-                </div>
+                <button-component
+                    class="update-card"
+                    style="padding-left: 300px;"
+                    text="Wykup dodatkowe pakiety"
+                    icon-name="build-outline"
+                    :onClick="goToBuySubscription"
+                />
             </div>
             <div class="client_card">
                 <div class="card_header">Karta rachunkowa</div>
@@ -48,7 +49,6 @@
                 <div class="label_card_valid_date">Data ważności</div>
                 <div class="card_type">Mastercard</div>
                 <div class="label_card_type">Rodzaj karty</div>
-                <button class="update-card">Aktualizuj dane karty</button>
             </div>
         </div>
     </div>
@@ -76,6 +76,9 @@
             cardExpirationDate.value = userData.creditCard.expirationDate;
         }
     });
+    const goToBuySubscription = async () => {
+        await navigateTo('/buy_subscription')
+    }
 </script>
 
 <style lang="scss" scoped>
