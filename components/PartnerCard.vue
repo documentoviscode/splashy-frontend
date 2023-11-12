@@ -1,22 +1,46 @@
 <template>
     <NuxtLink :to="`/employee/partners/${partner.id}`" class="link">
-        <div class="container">
+        <div class="partners-container">
             <div class="profile-picture">
                 <img :src="`/profilePictures/${partner.avatar}`" alt="profile photo" class="rounded-image">
             </div>
-            <div class="name">
-                {{ partner.name }} {{ partner.surname }}
+            <div class="name-container">
+                <div class="name">
+                    {{ partner.name }} {{ partner.surname }}
+                </div>
+                <div class="buttons" v-if="contractExtensionInProgress">
+                    <span>Czy umowa wymaga zmian?</span>
+                    <div>
+                        <button-component
+                            text="Tak - edytuj umowę"
+                            icon-name="create-outline"
+                            class="button"
+                        />
+                        <button-component
+                            text="Nie - wyślij ofertę do klienta"
+                            icon-name="checkbox-outline"
+                            color="#2056bd"
+                            class="button"
+                        />
+                    </div>
+                </div>
+                <div class="notification" v-if="contractExtensionInProgress">
+                    <Icon class="icon" name="ion:notifications-outline" size="30"/>
+                </div>
             </div>
         </div>
     </NuxtLink>
 </template>
 
 <script setup>
-    const { partner } = defineProps(['partner'])
+    const { partner } = defineProps(['partner']);
+
+    const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress);
+
 </script>
 
 <style lang="scss" scoped>
-.container {
+.partners-container {
     background-color: $background400;
     display: flex;
     flex-direction: row;
@@ -36,12 +60,49 @@
     }
 }
 
-.name {
+.name-container {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+
+    & > .name {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: $text500;
+        font-size: 2em;
+        font-weight: 500;
+    }
+
+    & > .buttons {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1em;
+
+        & > span {
+            margin-bottom: 0.4em;
+        }
+
+        & > div {
+            display: flex;
+            gap: 0.6em;
+            height: 3em;
+        }
+    }
+}
+
+.notification {
+    position: absolute;
+    width: 2.4em;
+    height: 2.4em;
+    background-color: $error500;
+    right: 0;
+    top: 0;
     display: flex;
     align-items: center;
-    text-decoration: none;
-    color: $text500;
-    font-size: 2em;
-    font-weight: 500;
+    justify-content: center;
+    border-radius: 50%;
 }
 </style>
