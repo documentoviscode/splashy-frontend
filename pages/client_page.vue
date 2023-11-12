@@ -76,10 +76,6 @@
             cardExpirationDate.value = userData.creditCard.expirationDate;
         }
     });
-
-
-
-  const userData = sessionStorage.getItem("userData");
 </script>
 
 <style lang="scss" scoped>
