@@ -73,41 +73,61 @@
     ]
     const selectedMonth = ref(months.at(-1));
 
-    import {baseAPIURL} from '~/config/api.js';
+    import {baseAPIURL} from '~/config/api.ts';
 
     onMounted(() => {
-        const report = reports.find((report) => {
-            return report.startDate[1] == selectedMonth.value.value; 
+        const filteredReports = reports.filter((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1;
         });
 
-        if(!report) {
+        if(!filteredReports) {
             donations.value =  "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
-        } 
+        }
 
-        donations.value = report.donations + " PLN";
-        views.value = report.viewers;
-        viewTime.value = report.hoursWatched + " h";
+        let donationsNum = 0;
+        let viewsNum = 0;
+        let viewTimeNum = 0;
+        filteredReports.forEach(item => {
+            donationsNum += item.donations;
+            viewsNum += item.viewers;
+            viewTimeNum += item.hoursWatched;
+        });
+
+        donations.value = donationsNum + " PLN";
+        views.value = viewsNum;
+        viewTime.value = viewTimeNum + " h";
     });
 
 
     watch(selectedMonth, () => {
-        const report = reports.find((report) => {
-            return report.startDate[1] == selectedMonth.value.value; 
+        const filteredReports = reports.filter((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1;
         });
 
-        if(!report) {
+        if(!filteredReports) {
             donations.value =  "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
-        } 
+        }
 
-        donations.value = report.donations + " PLN";
-        views.value = report.viewers;
-        viewTime.value = report.hoursWatched + " h";
+        let donationsNum = 0;
+        let viewsNum = 0;
+        let viewTimeNum = 0;
+        filteredReports.forEach(item => {
+            donationsNum += item.donations;
+            viewsNum += item.viewers;
+            viewTimeNum += item.hoursWatched;
+        });
+
+        donations.value = Math.floor(donationsNum) + " PLN";
+        views.value = viewsNum;
+        viewTime.value = viewTimeNum + " h";
     })
 
 
