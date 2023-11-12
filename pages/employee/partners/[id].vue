@@ -210,16 +210,10 @@
 
     const editMode = ref(true)
     const saveContract = async () => {
-        useFetch(baseAPIURL + `/partnershipCOntracts/${contract?.value.id}`,  {method: 'PATCH', body: {
-            "type": "PDF",
-            "creationDate": "2023-11-12",
-            "startDate": "2023-11-12",
+        useFetch(baseAPIURL + `/partnershipContracts/${contract?.value.id}`,  {method: 'PATCH', body: {
             "endDate": endDate,
             "rate": rate,
             "donationPercentage": donationPercentage,
-            "contractExtensionInProgress": false,
-            "contractExtensionOfferVisible": false,
-            "gdriveLink": "string"
         }});
         
         editMode.value = false;
