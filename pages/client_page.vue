@@ -84,16 +84,14 @@
 
             await nextTick();
 
-            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id)
-            console.log(data.value)
+            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id);
+            console.log(data.value);
             packages.value = data.value.documents.filter((document) => {
                 return (document.period === undefined)
-            })
+            });
             subscriptionList.value = data.value.documents.filter((document) => {
                 return !(document.period === undefined)
-            })
-            console.log(packages.value)
-            console.log(subscriptionList.value)
+            });
             subscription.value = subscriptionList.value[0];
             nextBillingDate.value = new Date(subscription.value.startDate)
             nextBillingDate.value.setHours(12);
