@@ -58,6 +58,7 @@
                             text="Rozwiąż umowę"
                             icon-name="exit-outline"
                             color="#dd3333"
+                            :on-click="navigateBack"
                         />
                     </div>
                     <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
@@ -112,6 +113,7 @@
 
 <script setup>
     import {baseAPIURL} from "~/config/api.ts";
+    import {navigateTo} from "#app";
 
     const name = ref('');
     const surname = ref('');
@@ -214,6 +216,10 @@
         extendContractTextVisible.value = true;
 
         setTimeout(() => {extendContractTextVisible.value = false}, 5000);
+    }
+
+    const navigateBack = () => {
+        setTimeout(async () => {await navigateTo('/')}, 1000);
     }
 
 </script>
