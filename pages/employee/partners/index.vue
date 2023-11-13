@@ -7,15 +7,6 @@
             <h1>Panel pracownika</h1>
         </div>
         <div class="content">
-            <div class="filtering-form">
-                <form>
-                    <input class="form-input" type="text" placeholder="Imię">
-                    <input class="form-input" type="text" placeholder="Nazwisko">
-                    <div class="buttons">
-                        <button-component text="Filtruj" />
-                    </div>
-                </form>
-            </div>
             <div class="partners-cards">
                 <div v-for="p in partners">
                 <PartnerCard :partner="p" />
@@ -29,19 +20,24 @@
 </template>
 
 <script setup>
-    import {baseAPIURL} from '../../../config/api.ts';
-    const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
+import {baseAPIURL} from '../../../config/api.ts';
+
+const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
     const partners = ref([]);
    
-    onMounted(() => { 
-        data.value.forEach(element => {
-            const name = element.name;
-            const surname = element.surname;
-            const id = element.id;
-            const obj = {"id": id, "name": name, "surname": surname}
-            partners.value.push(obj);
-        });
+    onMounted(() => {
+        partners.value = data.value;
 
+        partners.value.forEach(partner => {
+            partner['contract'] = partner.documents.filter((document) => {
+                return (document.rate !== undefined);
+            }).sort((item1, item2) => {
+                const date1 = new Date(item1.endDate);
+                const date2 = new Date(item2.endDate);
+
+                return date1 > date2;
+            }).at(-1);
+        });
     });
 
 </script>
@@ -51,10 +47,10 @@
         display: flex;
         flex-direction: column;
         font-family: Lato, Helvetica Neue, Noto Sans, sans-serif;
+        height: 100vh;
     }
     .header {
             display: flex;
-            flex: 1;
             align-items: center;
             background-color: $primary600;
 
@@ -80,7 +76,6 @@
     .footer {
         display: flex;
         flex-direction: column;
-        flex: 1;
         background-color: $background600;
         padding: 2em 4em;
 

@@ -23,22 +23,24 @@
                 <div class="subscriptions">
                     <div class="subscriptions_header">Subskrypcja i pakiety dodatkowe</div>
                     <div class="balance_state">
-                        Twój kolejny rachunek w dniu <strong>14.11.23</strong> wynosi <strong>30.56 zł</strong>.
+                        Twój kolejny rachunek w dniu <strong>{{ nextBillingDate.toISOString().substring(0, 10) }}</strong> wynosi <strong>{{subscription.monthlyRate}} zł</strong>.
                     </div>
-                    <div class="bundles_label">Pakiety dodatkowe</div>
+                    <div v-if="packages.length > 0" class="bundles_label">Pakiety dodatkowe</div>
                     <div class="bundles">
-                        <div class="bundle">Pakiet 1</div>
-                        <div class="bundle">Pakiet 2</div>
+                        <div v-for="p in packages">
+                            <div class="bundle">{{ p.packageType }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="buttons">
-                <div class="client_manage_button">
-                    <div>Zarządzaj swoim panelem</div>
-                </div>
-                <div class="client_edit_button">
-                    <div>Edytuj dane konta</div>
-                </div>
+                <button-component
+                    class="update-card"
+                    style="padding-left: 300px;"
+                    text="Wykup dodatkowe pakiety"
+                    icon-name="build-outline"
+                    :onClick="goToBuySubscription"
+                />
             </div>
             <div class="client_card">
                 <div class="card_header">Karta rachunkowa</div>
@@ -48,7 +50,6 @@
                 <div class="label_card_valid_date">Data ważności</div>
                 <div class="card_type">Mastercard</div>
                 <div class="label_card_type">Rodzaj karty</div>
-                <button class="update-card">Aktualizuj dane karty</button>
             </div>
         </div>
     </div>
@@ -62,11 +63,17 @@
     const cardNumber = ref('');
     const cardExpirationDate = ref('');
 
-    onMounted(() => {
+    const packages = ref([])
+    const subscriptionList = ref([]);    
+    const subscription = ref({});
+    const nextBillingDate = ref(new Date());
+
+    import {baseAPIURL} from '~/config/api.ts';
+
+    onMounted(async () => {
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
             const userData = JSON.parse(userDataString);
-            console.log(userData);
 
             name.value = userData.name;
             surname.value = userData.surname;
@@ -74,12 +81,26 @@
             email.value = userData.email;
             cardNumber.value = userData.creditCard.number;
             cardExpirationDate.value = userData.creditCard.expirationDate;
+
+            await nextTick();
+
+            const {data,pending,error,refresh} = await useFetch(baseAPIURL + '/users/' + userData.id);
+            console.log(data.value);
+            packages.value = data.value.documents.filter((document) => {
+                return (document.period === undefined)
+            });
+            subscriptionList.value = data.value.documents.filter((document) => {
+                return !(document.period === undefined)
+            });
+            subscription.value = subscriptionList.value[0];
+            nextBillingDate.value = new Date(subscription.value.startDate)
+            nextBillingDate.value.setHours(12);
+            nextBillingDate.value.setMonth(nextBillingDate.value.getMonth() + 1);
         }
     });
-
-
-
-  const userData = sessionStorage.getItem("userData");
+    const goToBuySubscription = async () => {
+        await navigateTo('/buy_subscription')
+    }
 </script>
 
 <style lang="scss" scoped>

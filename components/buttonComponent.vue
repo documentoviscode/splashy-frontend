@@ -27,7 +27,7 @@
 </script>
 
 <template>
-    <div class="container" :style="{ backgroundColor: color }" @click="onClick">
+    <div class="container" :style="{ backgroundColor: color }" v-on:click.stop="onClick">
         <Icon class="icon" v-if="iconName" :name="`ion:${iconName}`" size="21"/>
         <span>{{ text }}</span>
     </div>
@@ -56,6 +56,7 @@
 
         &:hover {
             filter: brightness(0.85);
+            cursor: pointer;
         }
 
         &:active {
