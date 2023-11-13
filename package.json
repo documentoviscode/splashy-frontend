@@ -1,13 +1,17 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "splashytv-app",
+  "author": "documentovisco",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "npx serve .output/public"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
