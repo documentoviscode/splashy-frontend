@@ -11,7 +11,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "npx serve .output/public"
+    "start": "nuxt start",
+    "heroku-postbuild": "npm run build"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
