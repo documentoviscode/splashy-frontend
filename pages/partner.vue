@@ -100,6 +100,7 @@
                             :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
+                            :onClick="generate"
                         />
                     </div>
                 </div>
@@ -115,6 +116,7 @@
     import {baseAPIURL} from "~/config/api.ts";
     import {navigateTo} from "#app";
 
+    var userData;
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
@@ -139,7 +141,7 @@
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
-            const userData = JSON.parse(userDataString);
+            userData = JSON.parse(userDataString);
 
             name.value = userData.name;
             surname.value = userData.surname;
@@ -178,6 +180,35 @@
             viewTimeEarnings.value = (contract.value.rate * report.hoursWatched).toFixed(2).toString();
         }
     });
+
+    const generate = async () => {
+        await nextTick();
+        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
+        const monthlyReports = [];
+        for (const i in data.value) {
+            monthlyReports.push(data.value[i].id)
+        }
+
+        const report = reports.value.find((report) => {
+          const date = new Date(report.startDate);
+          return date.getMonth() === selectedMonth.value.value - 1 && monthlyReports.includes(report.id);
+        });
+
+        await nextTick();
+        if (report) {
+            await nextTick();
+            const {data,pending,error,refresh} = await useFetch(
+                baseAPIURL + "/monthlyReportPartner/" + report.id);
+            const content = data.value;
+
+            const link = document.createElement("a");
+            const file = new Blob([content], { type: 'application/pdf' });
+            link.href = URL.createObjectURL(file);
+            link.download = "report.pdf";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    };
 
     const months = [
         {name: 'Czerwiec 2023', value: 6},
@@ -222,7 +253,6 @@
     const navigateBack = () => {
         setTimeout(async () => {await navigateTo('/')}, 1000);
     }
-
 </script>
 
 <style lang="scss" scoped>
