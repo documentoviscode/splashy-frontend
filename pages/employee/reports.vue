@@ -43,6 +43,7 @@
                             :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
+                            :onClick="generate"
                         />
                     </div>
                 </div>
@@ -55,6 +56,9 @@
 </template>
 
 <script setup>
+    // import {baseAPIURL} from "~/config/api.ts";
+    const baseAPIURL = "http://localhost:8080/api/v1";
+
     const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
 
     const reports = data.value;
@@ -72,8 +76,6 @@
         {name: 'Listopad 2023', value: 11},
     ]
     const selectedMonth = ref(months.at(-1));
-
-    import {baseAPIURL} from '~/config/api.ts';
 
     onMounted(() => {
         const filteredReports = reports.filter((report) => {
@@ -130,7 +132,36 @@
         viewTime.value = viewTimeNum + " h";
     })
 
+    const generate = async () => {
+        await nextTick();
+        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
+        const monthlyReports = [];
+        for (const i in data.value) {
+            monthlyReports.push(data.value[i].id)
+        }
 
+        const report = reports.find((report) => {
+            const date = new Date(report.startDate);
+            return date.getMonth() === selectedMonth.value.value - 1 && monthlyReports.includes(report.id);
+        });
+      console.log(report)
+
+        await nextTick();
+        if (report) {
+            await nextTick();
+            const {data,pending,error,refresh} = await useFetch(
+                baseAPIURL + "/monthlyReportCompany/" + report.id);
+            const content = data.value;
+
+            const link = document.createElement("a");
+            const file = new Blob([content],
+                { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            link.href = URL.createObjectURL(file);
+            link.download = "report.docx";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    };
 </script>
 
 <style lang="scss" scoped>

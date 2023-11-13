@@ -113,8 +113,7 @@
 </template>
 
 <script setup>
-    // import {baseAPIURL} from "~/config/api.ts";
-    const baseAPIURL = "http://localhost:8080/api/v1";
+    import {baseAPIURL} from "~/config/api.ts";
     import {navigateTo} from "#app";
 
     var userData;
