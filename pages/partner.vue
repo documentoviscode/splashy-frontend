@@ -150,6 +150,22 @@
 
             user.value = userData;
 
+            if (userData.id === 2) {
+                totalEarnings.value = '2 316 680 zł';
+                totalViews.value = '297.5 tys.';
+                totalViewTime.value = '45 mln. h';
+            }
+            else if (userData.id === 3) {
+                totalEarnings.value = '620 180 zł';
+                totalViews.value = '123.4 tys.';
+                totalViewTime.value = '9 mln. h';
+            }
+            else if (userData.id === 4) {
+                totalEarnings.value = '1 451 000 zł';
+                totalViews.value = '89.5 tys.';
+                totalViewTime.value = '20 mln. h';
+            }
+
             contract.value = user.value.documents.filter((document) => {
                 return (document.rate !== undefined);
             }).sort((item1, item2) => {
