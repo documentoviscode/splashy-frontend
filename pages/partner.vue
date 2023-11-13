@@ -96,6 +96,7 @@
                             :text="`Wygeneruj raport z miesiąca - ${selectedMonth}`"
                             icon-name="document-text-outline"
                             color="#18408e"
+                            :onClick="generate"
                         />
                     </div>
                 </div>
@@ -108,16 +109,23 @@
 </template>
 
 <script setup>
+    import {baseAPIURL} from '../../config/api.ts';
 
+    var userData;
     const name = ref('');
     const surname = ref('');
     const nickname = ref('');
 
+    const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
+    const selectedMonth = ref(months.at(-1));
+
+    const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
+    const reports = data.value;
+
     onMounted(() => {
         const userDataString = sessionStorage.getItem('userData');
         if (userDataString) {
-            const userData = JSON.parse(userDataString);
-            console.log(userData);
+            userData = JSON.parse(userDataString);
 
             name.value = userData.name;
             surname.value = userData.surname;
@@ -125,14 +133,60 @@
         }
     });
 
-
-
     const totalEarnings = ref('2 316 680 zł');
     const views = ref('297.5 tys.');
     const viewTime = ref('45 mln. h');
 
-    const months = ['Czerwiec 2023', 'Lipiec 2023', 'Sierpień 2023', 'Wrzesień 2023', 'Październik 2023', 'Listopad 2023']
-    const selectedMonth = ref(months.at(-1));
+
+    function stringToDate(s) {
+        const {month,year} = s.split(",", 2);
+        var monthNum = "00";
+        if (month === "Styczeń") monthNum = "01";
+        else if (month === "Luty") monthNum = "02";
+        else if (month === "Marzec") monthNum = "03";
+        else if (month === "Kwiecień") monthNum = "04";
+        else if (month === "Maj") monthNum = "05";
+        else if (month === "Czerwiec") monthNum = "06";
+        else if (month === "Lipiec") monthNum = "07";
+        else if (month === "Sierpień") monthNum = "08";
+        else if (month === "Wrzesień") monthNum = "09";
+        else if (month === "Październik") monthNum = "10";
+        else if (month === "Listopad") monthNum = "11";
+        else if (month === "Grudzień") monthNum = "12";
+        return year + "-" + monthNum + "-01";
+    }
+
+    const generate = async () => {
+        await nextTick();
+        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReports");
+        const reports = data.value;
+        console.log(reports);
+        const report = reports.find((report) => {
+            return report.partnerEmail === userData.email
+                && report.startDate === stringToDate(selectedMonth);
+        });
+
+        await nextTick();
+        if (report) {
+            var fileId = report.gdriveLink;
+            if (!fileId) {
+                await nextTick();
+                const {data,pending,error,refresh} = await useFetch(
+                    baseAPIURL + "/monthlyReportPartner/{" + report.id.value + "}");
+                fileId = data.value;
+            }
+            await nextTick();
+            const content = await useFetch(baseAPIURL + "/download/{" + fileId + "}");
+
+            const link = document.createElement("a");
+            const file = new Blob([content], { type: 'application/pdf' });
+            link.href = URL.createObjectURL(file);
+            link.download = "report.pdf";
+            link.click();
+            URL.revokeObjectURL(link.href);
+            console.log("pobrano");
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
