@@ -71,7 +71,7 @@
         {name: 'Październik 2023', value: 10},
         {name: 'Listopad 2023', value: 11},
     ]
-    const selectedMonth = ref(months.at(-1));
+    const selectedMonth = ref(months.at(-2));
 
     import {baseAPIURL} from '~/config/api.ts';
 
@@ -91,15 +91,18 @@
         let donationsNum = 0;
         let viewsNum = 0;
         let viewTimeNum = 0;
+        let viewTimeEarningsNum = 0;
         filteredReports.forEach(item => {
             donationsNum += item.donations;
             viewsNum += item.viewers;
             viewTimeNum += item.hoursWatched;
+            viewTimeEarningsNum += item.revenue;
         });
 
         donations.value = donationsNum + " PLN";
         views.value = viewsNum;
         viewTime.value = viewTimeNum + " h";
+        viewTimeEarnings.value = Math.floor(viewTimeEarningsNum) + ' PLN';
     });
 
 
@@ -119,15 +122,18 @@
         let donationsNum = 0;
         let viewsNum = 0;
         let viewTimeNum = 0;
+        let viewTimeEarningsNum = 0;
         filteredReports.forEach(item => {
             donationsNum += item.donations;
             viewsNum += item.viewers;
             viewTimeNum += item.hoursWatched;
+            viewTimeEarningsNum += item.revenue;
         });
 
         donations.value = Math.floor(donationsNum) + " PLN";
         views.value = viewsNum;
         viewTime.value = viewTimeNum + " h";
+        viewTimeEarnings.value = Math.floor(viewTimeEarningsNum) + ' PLN';
     })
 
 
