@@ -17,8 +17,8 @@
                 option-attribute="name"
             />
             <div v-if="!allPackagesBought" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }}</strong></div>
-            <div v-if="!allPackagesBought" class="period">Czas: na zawsze</div>
-            <div v-if="!allPackagesBought" class="description" id="description"> {{ selectedSubscription?.description ?? 'Witam' }}</div>
+            <div v-if="!allPackagesBought" class="period">{{ selectedSubscription?.price ? 'Ważność: na zawsze' : null }}</div>
+            <div v-if="!allPackagesBought" class="description" id="description"> {{ selectedSubscription?.description ?? 'Wybierz pakiet z listy powyżej' }}</div>
             <button-component
                 v-if="!allPackagesBought"
                 text="Kup pakiet"
@@ -45,8 +45,8 @@
     const allPackagesBought = ref(false);
 
     const packages = [
-        {name: 'Freezing b!ch3s', price: 99.99, description: 'Freeze !', value: 0},
-        {name: 'Old but gold', price: 69.99, description: 'Olds',value: 1}
+        {name: 'VIP+', price: 59.99, description: 'Pakiet oferujący ponad 1000 dodatkowych streamów oraz możliwość wysyłania prywatnych wiadomości do streamerek', value: 0},
+        {name: 'VIP++ PREMIUM 4K UHD', price: 229.99, description: 'Pakiet dla największych koneserów, oferujący wszystkie możliwe streamy, jakość 4k Ultra HD oraz zapisywanie streamów na prywatnym dysku',value: 1}
     ];
 
     onMounted(async () => {
