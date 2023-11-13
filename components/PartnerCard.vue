@@ -46,15 +46,17 @@
 
     const { partner } = defineProps(['partner']);
 
-    const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress);
+    const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress && !partner.contract?.value.contractExtensionOfferVisible);
     const extendContractTextVisible = ref(false);
 
     const sendOffer = async () => {
-        useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
-
         extendContractTextVisible.value = true;
 
-        setTimeout(() => {extendContractTextVisible.value = false}, 5000);
+        setTimeout(() => {extendContractTextVisible.value = false}, 3000);
+
+        useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
+
+        partner.contract.value['contractExtensionOfferVisible'] = true;
     }
 
     const navToPartner = async () => {
