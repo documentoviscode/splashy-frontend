@@ -194,7 +194,6 @@
           const date = new Date(report.startDate);
           return date.getMonth() === selectedMonth.value.value - 1 && monthlyReports.includes(report.id);
         });
-        console.log(report.id);
 
         await nextTick();
         if (report) {
