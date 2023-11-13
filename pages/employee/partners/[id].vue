@@ -155,6 +155,22 @@
     const { id } = useRoute().params
     const { data: partner } = await useFetch(baseAPIURL + "/partners/" + id);
 
+    if (partner.value.id === 2) {
+        totalEarnings.value = '2 316 680 zł';
+        totalViews.value = '297.5 tys.';
+        totalViewTime.value = '45 mln. h';
+    }
+    else if (partner.value.id === 3) {
+        totalEarnings.value = '620 180 zł';
+        totalViews.value = '123.4 tys.';
+        totalViewTime.value = '9 mln. h';
+    }
+    else if (partner.value.id === 4) {
+        totalEarnings.value = '1 451 000 zł';
+        totalViews.value = '89.5 tys.';
+        totalViewTime.value = '20 mln. h';
+    }
+
     name.value = partner.value.name;
     surname.value = partner.value.surname;
     nickname.value = partner.value.nickname;
