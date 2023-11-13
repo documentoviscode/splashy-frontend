@@ -57,6 +57,7 @@
         useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
 
         partner.contract.value['contractExtensionOfferVisible'] = true;
+        contractExtensionInProgress.value = false;
     }
 
     const navToPartner = async () => {
