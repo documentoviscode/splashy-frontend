@@ -9,7 +9,7 @@
             <button>Zaloguj</button>
         </form>
         <div class="partner-link">
-            <span>WIP</span>
+            <span>dev navigation</span>
             <div>
                 <button-component
                     text="Podstrona klienta"
@@ -83,7 +83,7 @@ form {
     max-width: 420px;
     margin: 30px auto;
     text-align: center;
-    padding: 40px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
