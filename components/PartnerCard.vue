@@ -46,7 +46,7 @@
 
     const { partner } = defineProps(['partner']);
 
-    const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress && !partner.contract?.value.contractExtensionOfferVisible);
+    const contractExtensionInProgress = ref(partner.contract.contractExtensionInProgress && !partner.contract?.contractExtensionOfferVisible);
     const extendContractTextVisible = ref(false);
 
     const sendOffer = async () => {
