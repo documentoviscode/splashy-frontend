@@ -46,7 +46,7 @@
                 <div class="card_header">Karta rachunkowa</div>
                 <div class="card_number">{{ cardNumber }}</div>
                 <div class="label_card_number">Numer karty</div>
-                <div class="card_valid_date">{{ cardExpirationDate[1] }} / {{ cardExpirationDate[0] }}</div>
+                <div class="card_valid_date">{{ cardExpirationDate.split('-')[1] }} / {{ cardExpirationDate.split('-')[0] }}</div>
                 <div class="label_card_valid_date">Data ważności</div>
                 <div class="card_type">Mastercard</div>
                 <div class="label_card_type">Rodzaj karty</div>
