@@ -2,7 +2,7 @@
     <div class="main-container">
         <div class="header">
             <nuxt-link class="home" to="/">
-                <img src="~/assets/documentovisco-transparent-light.png" alt="logo" @click="">
+                <img src="~/assets/splashyTV-logo-transparent-light.png" alt="logo" @click="">
             </nuxt-link>
             <h1>Panel partnera</h1>
         </div>
@@ -107,7 +107,7 @@
             </div>
         </div>
         <div class="footer">
-            <span>&copy; Documentovisco 2023</span>
+            <span>&copy; splashyTV 2023</span>
         </div>
     </div>
 </template>
@@ -285,7 +285,8 @@
 
         & > .home {
             & > img {
-                width: 8em;
+                margin-left: 1em;
+                width: 5em;
                 transition: 0.1s ease-in-out;
             }
             & > img:hover {

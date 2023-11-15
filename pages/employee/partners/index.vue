@@ -2,7 +2,7 @@
     <div class="main-container">
         <div class="header">
             <nuxt-link class="home" to="/">
-                <img src="~/assets/documentovisco-transparent-light.png" alt="logo" @click="">
+                <img src="~/assets/splashyTV-logo-transparent-light.png" alt="logo" @click="">
             </nuxt-link>
             <h1>Panel pracownika</h1>
         </div>
@@ -56,7 +56,8 @@ const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/partners");
 
             & > .home {
                 & > img {
-                    width: 8em;
+                    width: 5em;
+                    margin-left: 1em;
                     transition: 0.1s ease-in-out;
                 }
                 & > img:hover {

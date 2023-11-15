@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="~/assets/documentovisco-transparent-light.png" alt="logo" class="center">
+        <img src="~/assets/splashyTV-logo-transparent-light.png" alt="splashyTV logo" class="center">
         <form @submit.prevent="handleSubmit">
             <label>Zaloguj się za pomocą adresu e-mail</label>
             <input v-model="email" type="email" required>
@@ -79,6 +79,12 @@ async function handleSubmit () {
 </script>
 
 <style lang="scss" scoped>
+
+img {
+    width: 20em;
+    pointer-events: none;
+}
+
 form {
     max-width: 420px;
     margin: 30px auto;
