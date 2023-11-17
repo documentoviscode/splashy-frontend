@@ -4,10 +4,11 @@
             <div class="button-container">
                 <button-component
                     text="Powrót"
+                    icon-name="arrow-back"
                     :on-click="navigateBack"
                 />
             </div>
-            <div class="header">Wybierz pakiet:</div>
+            <div class="header">Wybierz pakiet dodatkowy:</div>
             <USelectMenu
                 v-if="!allPackagesBought"
                 v-model="selectedSubscription"
@@ -16,13 +17,13 @@
                 color="#3770dd"
                 option-attribute="name"
             />
-            <div v-if="!allPackagesBought" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }}</strong></div>
+            <div v-if="!allPackagesBought && selectedSubscription" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }} zł</strong></div>
             <div v-if="!allPackagesBought" class="period">{{ selectedSubscription?.price ? 'Ważność: na zawsze' : null }}</div>
             <div v-if="!allPackagesBought" class="description" id="description"> {{ selectedSubscription?.description ?? 'Wybierz pakiet z listy powyżej' }}</div>
             <button-component
                 v-if="!allPackagesBought"
                 text="Kup pakiet"
-                icon-name="build-outline"
+                icon-name="add-outline"
                 :onClick="buy"
             />
             <span v-if="!allPackagesBought" class="buy_text">{{ buyText }}</span>
@@ -129,7 +130,8 @@
     row-gap: 40px;
     margin-top: 80px;
     padding: 40px 60px;
-    background-color: $background400;
+    background-color: $background600;
+    border: 1px solid $primary500;
     border-radius: 10px;
 
     & > .all_packages_bought > span {
@@ -150,11 +152,15 @@
 
 .header {
     text-align: center;
-    font-size: 24px;
+    font-size: 30px;
 }
 
 .price, .period, .description {
     font-size: 24px;
+
+    & > strong {
+        font-size: 26px;
+    }
 }
 
 .sub_form > select {
