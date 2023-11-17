@@ -193,6 +193,7 @@
     column-gap: 20px;
     justify-items: stretch;
     border: 0.1rem solid $primary500;
+    box-shadow: 4px 4px 16px 0 $background800;
 }
 
 .data_header {
@@ -218,8 +219,6 @@
 
 .subscriptions {
     border-left: 0.5px solid $background400;
-    //border: 2px $text500 solid;
-    //border-radius: 10px;
     grid-column: 2;
     grid-row: 1 / span 7;
     justify-self: stretch;
@@ -232,7 +231,6 @@
     font-size: 30px;
     padding-left: 1em;
     padding-bottom: 8px;
-    //background: $primary500;
     width: 501px;
     transform: translate(-2px, -2px);
 }
@@ -260,7 +258,6 @@
 }
 
 .bundle {
-    //background-color: #000000;
     width: 460px;
     height: 80px;
     margin-bottom: 10px;
@@ -272,7 +269,9 @@
     position: relative;
     border: 1px solid $primary700;
     background-color: $background700;
-    box-shadow: inset 0 0 20px 4px $background800;
+    box-shadow: inset 0 0 20px 4px $background800, 2px 2px 8px 0px $background800;
+    pointer-events: none;
+    user-select: none;
 
     &::before {
         content: '';
