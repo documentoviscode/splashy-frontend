@@ -9,7 +9,7 @@
         <div class="content">
             <div class="partners-cards">
                 <div v-for="p in partners">
-                <PartnerCard :partner="p" />
+                    <PartnerCard :partner="p" />
                 </div>
             </div>
         </div>

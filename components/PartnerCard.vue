@@ -101,6 +101,7 @@
     & > img {
         border-radius: 50%;
         width: 8em;
+        box-shadow: 2px 2px 12px 4px $background800;
     }
 }
 
