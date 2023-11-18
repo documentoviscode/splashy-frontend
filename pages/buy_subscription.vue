@@ -4,10 +4,11 @@
             <div class="button-container">
                 <button-component
                     text="Powrót"
+                    icon-name="arrow-back"
                     :on-click="navigateBack"
                 />
             </div>
-            <div class="header">Wybierz pakiet:</div>
+            <div class="header">Wybierz pakiet dodatkowy:</div>
             <USelectMenu
                 v-if="!allPackagesBought"
                 v-model="selectedSubscription"
@@ -16,16 +17,20 @@
                 color="#3770dd"
                 option-attribute="name"
             />
-            <div v-if="!allPackagesBought" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }}</strong></div>
+            <div v-if="!allPackagesBought && selectedSubscription" class="price">Cena: <strong id="price">{{ selectedSubscription?.price ?? 0.00 }} zł</strong></div>
             <div v-if="!allPackagesBought" class="period">{{ selectedSubscription?.price ? 'Ważność: na zawsze' : null }}</div>
             <div v-if="!allPackagesBought" class="description" id="description"> {{ selectedSubscription?.description ?? 'Wybierz pakiet z listy powyżej' }}</div>
             <button-component
                 v-if="!allPackagesBought"
                 text="Kup pakiet"
-                icon-name="build-outline"
+                icon-name="add-outline"
                 :onClick="buy"
             />
-            <span v-if="!allPackagesBought" class="buy_text">{{ buyText }}</span>
+            <transition name="fade" mode="in-out">
+                <div v-if="boughtTextVisible" class="buy_text">
+                    <span>{{ buyText }}</span>
+                </div>
+            </transition>
             <div class="all_packages_bought" v-if="allPackagesBought">
                 <span>Kupiłeś wszystkie pakiety! Gratulacje 😏😏</span>
             </div>
@@ -43,6 +48,7 @@
     const packagesToBuy = ref([])
 
     const allPackagesBought = ref(false);
+    const boughtTextVisible = ref(false);
 
     const packages = [
         {name: 'VIP+', price: 59.99, description: 'Pakiet oferujący ponad 1000 dodatkowych streamów oraz możliwość wysyłania prywatnych wiadomości do streamerek', value: 0},
@@ -101,9 +107,15 @@
         } else {
             buyText.value = 'Nie udało się zakupić pakietu!'
         }
+
+        boughtTextVisible.value = true;
+        setTimeout(() => {
+            boughtTextVisible.value = false
+        }, 2000);
+
         setTimeout(async () => {
             await navigateTo('/client_page')
-        }, 2500)
+        }, 4000)
     }
 
     const navigateBack = async () => {
@@ -129,7 +141,8 @@
     row-gap: 40px;
     margin-top: 80px;
     padding: 40px 60px;
-    background-color: $background400;
+    background-color: $background600;
+    border: 1px solid $primary500;
     border-radius: 10px;
 
     & > .all_packages_bought > span {
@@ -150,11 +163,15 @@
 
 .header {
     text-align: center;
-    font-size: 24px;
+    font-size: 30px;
 }
 
 .price, .period, .description {
     font-size: 24px;
+
+    & > strong {
+        font-size: 26px;
+    }
 }
 
 .sub_form > select {
@@ -178,7 +195,27 @@
 .buy_text {
     color: $secondary400;
     text-align: center;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 26px;
+    border-radius: 12px;
+    padding: 0.5em 1em;
+    border: 1px solid $secondary700;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s, transform 0.5s;
+}
+.fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+    transform: translateY(-60%);
+}
+
+.page-enter-active,
+.page-leave-active {
+    transition: all 90ms;
+}
+.page-enter-from,
+.page-leave-to {
+    opacity: 0;
+    transform: scale(0.98);
 }
 </style>

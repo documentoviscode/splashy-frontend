@@ -4,7 +4,7 @@
             <nuxt-link class="home" to="/">
                 <img src="~/assets/splashyTV-logo-transparent-light.png" alt="logo" @click="">
             </nuxt-link>
-            <h1>Panel pracownika</h1>
+            <h1>Panel pracownika biura obsługi partnerów</h1>
         </div>
         <div class="content">
             <div class="statistics">
@@ -135,8 +135,6 @@
         viewTime.value = viewTimeNum + " h";
         viewTimeEarnings.value = Math.floor(viewTimeEarningsNum) + ' PLN';
     })
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -148,13 +146,12 @@
     }
     .header {
         display: flex;
-        flex: 1;
         align-items: center;
         background-color: $primary600;
 
         & > .home {
             & > img {
-                width: 6em;
+                width: 5em;
                 margin-left: 1em;
                 transition: 0.1s ease-in-out;
             }
