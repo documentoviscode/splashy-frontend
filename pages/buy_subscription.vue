@@ -208,4 +208,14 @@
     opacity: 0;
     transform: translateY(-60%);
 }
+
+.page-enter-active,
+.page-leave-active {
+    transition: all 90ms;
+}
+.page-enter-from,
+.page-leave-to {
+    opacity: 0;
+    transform: scale(0.98);
+}
 </style>
