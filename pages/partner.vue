@@ -32,36 +32,74 @@
                 />
             </div>
             <div class="contract">
-                <div class="section-header">
-                    <span>Twoja umowa</span>
+                <div v-if="!contractExtensionOfferVisible">
+                    <div class="section-header">
+                        <span>Twoja umowa</span>
+                    </div>
+                    <div class="card">
+                        <div class="section">
+                            <span class="caption">Ważność umowy:</span>
+                            <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
+                        </div>
+                        <div class="section">
+                            <span class="caption">Stawka za godzinę oglądalności:</span>
+                            <span class="important">{{ rate }} zł</span>
+                        </div>
+                        <div class="section">
+                            <span class="caption">Procent otrzymywanych dotacji:</span>
+                            <span class="important">{{ donationPercentage }}%</span>
+                        </div>
+                        <div class="buttons">
+                            <button-component
+                                text="Przedłuż umowę"
+                                icon-name="duplicate-outline"
+                                :on-click="extendContract"
+                            />
+                            <button-component
+                                text="Rozwiąż umowę"
+                                icon-name="exit-outline"
+                                color="#dd3333"
+                                :on-click="navigateBack"
+                            />
+                        </div>
+                        <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
+                    </div>
                 </div>
-                <div class="card">
-                    <div class="section">
-                        <span class="caption">Ważność umowy:</span>
-                        <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
+                
+                <div v-if="contractExtensionOfferVisible">
+                    <div class="section-header">
+                        <span>Zatwierdź nową umowę</span>
+                        <span class="notification"><Icon class="icon" name="ion:notifications-outline" size="30"/></span>
                     </div>
-                    <div class="section">
-                        <span class="caption">Stawka za godzinę oglądalności:</span>
-                        <span class="important">{{ rate }} zł</span>
+                    <div class="card" style="border: #c40b74 0.2px solid;">
+                        <div class="section">
+                            <span class="caption">Ważność umowy:</span>
+                            <span class="important">do {{ endDate?.getDate() }}.{{ endDate?.getMonth() + 1 }}.{{ endDate?.getFullYear() }}r</span>
+                        </div>
+                        <div class="section">
+                            <span class="caption">Stawka za godzinę oglądalności:</span>
+                            <span class="important">{{ rate }} zł</span>
+                        </div>
+                        <div class="section">
+                            <span class="caption">Procent otrzymywanych dotacji:</span>
+                            <span class="important">{{ donationPercentage }}%</span>
+                        </div>
+                        <div class="buttons">
+                            <button-component
+                                text="Zaakceptuj ofertę"
+                                icon-name="duplicate-outline"
+                                :on-click="acceptContract"
+                            />
+                            <button-component
+                                text="Odrzuć ofertę"
+                                icon-name="exit-outline"
+                                color="#dd3333"
+                                :on-click="declineContract"
+                            />
+                        </div>
+                        <span v-if="acceptedNewContractTextVisible">Zapisano nową umowę</span>
+                        <span v-if="declinedNewContractTextVisible">Odrzucono nowe warunki umowy</span>
                     </div>
-                    <div class="section">
-                        <span class="caption">Procent otrzymywanych dotacji:</span>
-                        <span class="important">{{ donationPercentage }}%</span>
-                    </div>
-                    <div class="buttons">
-                        <button-component
-                            text="Przedłuż umowę"
-                            icon-name="duplicate-outline"
-                            :on-click="extendContract"
-                        />
-                        <button-component
-                            text="Rozwiąż umowę"
-                            icon-name="exit-outline"
-                            color="#dd3333"
-                            :on-click="navigateBack"
-                        />
-                    </div>
-                    <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
                 </div>
             </div>
             <div class="statistics">
@@ -127,6 +165,7 @@
     const endDate = ref();
     const rate = ref();
     const donationPercentage = ref();
+    const contractExtensionOfferVisible = ref(false)
 
     const totalEarnings = ref('2 316 680 zł');
     const totalViews = ref('297.5 tys.');
@@ -182,6 +221,7 @@
             endDate.value = new Date(new Date(contract?.value.endDate).toISOString().split('T')[0]);
             rate.value = contract?.value.rate;
             donationPercentage.value = contract?.value.donationPercentage;
+            contractExtensionOfferVisible.value = contract?.value.contractExtensionOfferVisible;
 
             // get report
             const report = reports.value.find((report) => {
@@ -237,6 +277,8 @@
     const selectedMonth = ref(months.at(-2));
 
     const extendContractTextVisible = ref(false);
+    const acceptedNewContractTextVisible = ref(false)
+    const declinedNewContractTextVisible = ref(false)
 
     watch(selectedMonth, () => {
         const report = reports.value.find((report) => {
@@ -268,6 +310,26 @@
 
     const navigateBack = () => {
         setTimeout(async () => {await navigateTo('/')}, 1000);
+    }
+
+    const acceptContract = async () => {
+        useFetch(baseAPIURL + `/tasks/userReview/true`,  {method: 'POST'});
+
+        acceptedNewContractTextVisible.value = true;
+
+        setTimeout(() => {acceptedNewContractTextVisible.value = false}, 3000);
+        setTimeout(() => {contractExtensionOfferVisible.value = false}, 3000);
+    }
+
+    const declineContract = async () => {
+        useFetch(baseAPIURL + `/tasks/userReview/false`,  {method: 'POST'});
+
+        declinedNewContractTextVisible.value = true;
+
+        setTimeout(() => {declinedNewContractTextVisible.value = false}, 1000);
+        setTimeout(() => {contractExtensionOfferVisible.value = false}, 1000);
+
+        navigateBack();
     }
 </script>
 
@@ -382,6 +444,10 @@
 
     .month-select {
         margin-bottom: 0.6em;
+    }
+
+    .notification {
+        margin-left: 0.5em;
     }
 
     .footer {
