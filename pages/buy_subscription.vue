@@ -26,7 +26,11 @@
                 icon-name="add-outline"
                 :onClick="buy"
             />
-            <span v-if="!allPackagesBought" class="buy_text">{{ buyText }}</span>
+            <transition name="fade" mode="in-out">
+                <div v-if="boughtTextVisible" class="buy_text">
+                    <span>{{ buyText }}</span>
+                </div>
+            </transition>
             <div class="all_packages_bought" v-if="allPackagesBought">
                 <span>Kupiłeś wszystkie pakiety! Gratulacje 😏😏</span>
             </div>
@@ -44,6 +48,7 @@
     const packagesToBuy = ref([])
 
     const allPackagesBought = ref(false);
+    const boughtTextVisible = ref(false);
 
     const packages = [
         {name: 'VIP+', price: 59.99, description: 'Pakiet oferujący ponad 1000 dodatkowych streamów oraz możliwość wysyłania prywatnych wiadomości do streamerek', value: 0},
@@ -102,9 +107,15 @@
         } else {
             buyText.value = 'Nie udało się zakupić pakietu!'
         }
+
+        boughtTextVisible.value = true;
+        setTimeout(() => {
+            boughtTextVisible.value = false
+        }, 2000);
+
         setTimeout(async () => {
             await navigateTo('/client_page')
-        }, 2500)
+        }, 4000)
     }
 
     const navigateBack = async () => {
@@ -184,7 +195,17 @@
 .buy_text {
     color: $secondary400;
     text-align: center;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 26px;
+    border-radius: 12px;
+    padding: 0.5em 1em;
+    border: 1px solid $secondary700;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s, transform 0.5s;
+}
+.fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+    transform: translateY(-60%);
 }
 </style>
