@@ -62,7 +62,11 @@
                                 :on-click="navigateBack"
                             />
                         </div>
-                        <span v-if="extendContractTextVisible">Wysłano prośbę o przedłużenie umowy</span>
+                        <transition name="fade" mode="in-out">
+                            <div v-if="extendContractTextVisible" class="alert">
+                                <span>Wysłano prośbę o przedłużenie umowy</span>
+                            </div>
+                        </transition>
                     </div>
                 </div>
                 
@@ -97,8 +101,16 @@
                                 :on-click="declineContract"
                             />
                         </div>
-                        <span v-if="acceptedNewContractTextVisible">Zapisano nową umowę</span>
-                        <span v-if="declinedNewContractTextVisible">Odrzucono nowe warunki umowy</span>
+                        <transition name="fade" mode="in-out">
+                            <div v-if="acceptedNewContractTextVisible" class="alert">
+                                <span>Zapisano nową umowę</span>
+                            </div>
+                        </transition>
+                        <transition name="fade" mode="in-out">
+                            <div v-if="declinedNewContractTextVisible" class="alert">
+                                <span>Odrzucono nowe warunki umowy</span>
+                            </div>
+                        </transition>
                     </div>
                 </div>
             </div>
@@ -334,6 +346,14 @@
 </script>
 
 <style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.3s, transform 0.5s;
+    }
+    .fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+        opacity: 0;
+        transform: translateY(-60%);
+    }
+
     .main-container {
         display: flex;
         flex-direction: column;
@@ -431,10 +451,17 @@
             gap: 1em;
         }
 
-        & > span {
-            font-size: 1.4em;
+        & > .alert {
             margin-top: 1em;
-            color: $secondary400;
+            padding: 1em 1em;
+            border: 1px solid $secondary800;
+            border-radius: 12px;
+
+            & > span {
+                font-size: 1.4em;
+                margin-top: 1em;
+                color: $secondary400;
+            }
         }
     }
 
