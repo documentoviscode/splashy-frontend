@@ -142,16 +142,7 @@
 
         const startDate = new Date(2023, selectedMonth.value.value - 1, 1);
         const endDate = new Date(2023, selectedMonth.value.value, 0);
-
-        console.log({
-          "creationDate": new Date().toISOString(),
-          "startDate": startDate.toISOString(),
-          "endDate": endDate.toISOString(),
-          "viewers": views.value,
-          "hoursWatched": viewTime.value,
-          "donations": donations.value,
-          "revenue": viewTimeEarnings.value
-        });
+        
         const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReportCompany", {
             method: 'POST', body: {
                 "creationDate": new Date().toISOString(),
