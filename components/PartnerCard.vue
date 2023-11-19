@@ -25,18 +25,26 @@
                             :on-click="sendOffer"
                         />
                     </div>
-                    <span class="sent" v-if="extendContractTextVisible">Wysłano ofertę do klienta</span>
                 </div>
 
 
-                <div v-if="contractExtensionInProgress" class="notification-text">
-                    <span>Prośba o przedłużenie umowy</span>
-                </div>
-                <div class="notification" v-if="contractExtensionInProgress">
-                    <Icon class="icon" name="ion:notifications-outline" size="30"/>
-                </div>
+                <transition name="fade" mode="in-out">
+                    <div v-if="contractExtensionInProgress" class="notification-text">
+                        <span>Prośba o przedłużenie umowy</span>
+                    </div>
+                </transition>
+                <transition name="fade" mode="in-out">
+                    <div class="notification" v-if="contractExtensionInProgress">
+                        <Icon class="icon" name="ion:notifications-outline" size="30"/>
+                    </div>
+                </transition>
             </div>
         </div>
+        <transition name="fade" mode="in-out">
+            <div v-if="extendContractTextVisible" class="alert">
+                <span class="sent">Wysłano ofertę do klienta</span>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -52,13 +60,17 @@
     const sendOffer = async () => {
         extendContractTextVisible.value = true;
 
-        setTimeout(() => {extendContractTextVisible.value = false}, 3000);
+        setTimeout(() => {extendContractTextVisible.value = false}, 2700);
 
         useFetch(baseAPIURL + `/tasks/adminReview/true`,  {method: 'POST'});
-
-        partner.contract.value['contractExtensionOfferVisible'] = true;
-        contractExtensionInProgress.value = false;
+        
+        setTimeout(() => {contractExtensionInProgress.value = false}, 3000);
     }
+
+    watch(contractExtensionInProgress, () => {
+        console.log('contract extension');
+        console.log(contractExtensionInProgress);
+    })
 
     const navToPartner = async () => {
         await navigateTo(`/employee/partners/${partner.id}`);
@@ -68,15 +80,20 @@
 
 <style lang="scss" scoped>
 .partners-container {
-    background-color: $background400;
+    background-color: $background600;
     display: flex;
     flex-direction: row;
-    padding: 1em 2em;
+    padding: 2em 2em;
     gap: 3em;
     text-decoration: none;
     border-radius: 2em;
     border: 0.1em solid $primary500;
     box-shadow: 4px 4px 12px 0 $background800;
+    transition: background-color 150ms;
+
+    &:hover {
+        background-color: $background700;
+    }
 }
 .profile-picture {
     align-self: center;
@@ -84,6 +101,7 @@
     & > img {
         border-radius: 50%;
         width: 8em;
+        box-shadow: 2px 2px 12px 4px $background800;
     }
 }
 
@@ -156,6 +174,27 @@
     & > span {
         font-size: 0.8em;
     }
+}
+
+.alert {
+    //position: absolute;
+    margin-top: 1em;
+    padding: 1rem 1rem;
+    border: 1px solid $secondary800;
+    border-radius: 12px;
+
+    & > span {
+        font-size: 1.4em;
+        color: $secondary400;
+    }
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s, transform 0.5s;
+}
+.fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+    transform: translateY(-60%);
 }
 
 </style>

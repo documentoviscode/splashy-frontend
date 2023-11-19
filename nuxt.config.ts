@@ -13,7 +13,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'SplashyTV'
-    }
+    },
+    pageTransition: {name: 'page', mode: 'out-in'}
   },
   modules: [
     ['@nuxtjs/google-fonts', {

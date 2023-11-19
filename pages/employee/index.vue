@@ -1,9 +1,9 @@
 <template>
     <div class="header">
         <nuxt-link class="home" to="/">
-            <img src="~/assets/splashyTV-logo-transparent-light.png" alt="logo" @click="">
+            <img src="~/assets/splashyTV-logo-transparent-light.png" alt="logo">
         </nuxt-link>
-        <h1>Panel partnera</h1>
+        <h1>Panel pracownika biura obsługi partnerów</h1>
     </div>
     <div class="main-container">
         <div class="logo">
@@ -26,6 +26,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+    pageTransition: false,
+    layoutTransition: false
+})
 
 </script>
 
