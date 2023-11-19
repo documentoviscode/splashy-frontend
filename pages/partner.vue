@@ -267,10 +267,6 @@
             await nextTick();
             const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReportPartner/" + report.id);
             const content = data.value;
-            console.log(data);
-            console.log(pending);
-            console.log(error);
-            console.log(refresh);
 
             const link = document.createElement("a");
             const file = new Blob([content], { type: 'application/pdf' });
