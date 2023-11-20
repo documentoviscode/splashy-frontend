@@ -108,7 +108,7 @@ form {
 
     & > span {
         color: $error500;
-        font-size: 16;
+        font-size: 16px;
         font-weight: 600;
     }
 }

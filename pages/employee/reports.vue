@@ -83,7 +83,7 @@
         });
 
         if(!filteredReports) {
-            donations.value =  "0 PLN";
+            donations.value = "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
@@ -138,14 +138,17 @@
     })
 
     const generate = async () => {
+        if (viewTimeEarnings.value === "0 PLN") return;
+
         await nextTick();
 
-        const startDate = new Date(2023, selectedMonth.value.value - 1, 1);
-        const endDate = new Date(2023, selectedMonth.value.value, 0);
+        const now = new Date().toISOString();
+        const startDate = new Date(2023, selectedMonth.value.value - 1, 1, 12);
+        const endDate = new Date(2023, selectedMonth.value.value, 0, 12);
         
         const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReportCompany", {
             method: 'POST', body: {
-                "creationDate": new Date().toISOString(),
+                "creationDate": now,
                 "startDate": startDate.toISOString(),
                 "endDate": endDate.toISOString(),
                 "viewers": views.value,
@@ -161,7 +164,7 @@
               type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             });
             link.href = URL.createObjectURL(file);
-            link.download = "report.docx";
+            link.download = `monthlyReportCompany_${now.substring(0, 10)}.docx`;
             link.click();
             URL.revokeObjectURL(link.href);
         }
