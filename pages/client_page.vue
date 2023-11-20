@@ -83,7 +83,7 @@
             surname.value = userData.surname;
             nickname.value = userData.email.split('@')[0];
             email.value = userData.email;
-            cardNumber.value = userData.creditCard.number;
+            cardNumber.value = "**** **** **** " + userData.creditCard.number.substring(12);
             cardExpirationDate.value = userData.creditCard.expirationDate;
 
             await nextTick();

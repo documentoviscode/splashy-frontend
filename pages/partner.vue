@@ -265,14 +265,13 @@
         await nextTick();
         if (report) {
             await nextTick();
-            const {data,pending,error,refresh} = await useFetch(
-                baseAPIURL + "/monthlyReportPartner/" + report.id);
+            const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReportPartner/" + report.id);
             const content = data.value;
 
             const link = document.createElement("a");
             const file = new Blob([content], { type: 'application/pdf' });
             link.href = URL.createObjectURL(file);
-            link.download = "report.pdf";
+            link.download = `monthlyReport_${new Date().toISOString().substring(0, 10)}.pdf`;
             link.click();
             URL.revokeObjectURL(link.href);
         }

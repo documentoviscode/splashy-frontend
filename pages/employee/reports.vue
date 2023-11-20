@@ -43,6 +43,7 @@
                             :text="`Wygeneruj raport z miesiąca - ${selectedMonth.name}`"
                             icon-name="document-text-outline"
                             color="#18408e"
+                            :onClick="generate"
                         />
                     </div>
                 </div>
@@ -71,7 +72,7 @@
         {name: 'Październik 2023', value: 10},
         {name: 'Listopad 2023', value: 11},
     ]
-    const selectedMonth = ref(months.at(-2));
+    const selectedMonth = ref(months.at(-1));
 
     import {baseAPIURL} from '~/config/api.ts';
 
@@ -82,7 +83,7 @@
         });
 
         if(!filteredReports) {
-            donations.value =  "0 PLN";
+            donations.value = "0 PLN";
             views.value = "0";
             viewTime.value = "0 h"
             return;
@@ -135,6 +136,39 @@
         viewTime.value = viewTimeNum + " h";
         viewTimeEarnings.value = Math.floor(viewTimeEarningsNum) + ' PLN';
     })
+
+    const generate = async () => {
+        if (viewTimeEarnings.value === "0 PLN") return;
+
+        await nextTick();
+
+        const now = new Date().toISOString();
+        const startDate = new Date(2023, selectedMonth.value.value - 1, 1, 12);
+        const endDate = new Date(2023, selectedMonth.value.value, 0, 12);
+        
+        const {data,pending,error,refresh} = await useFetch(baseAPIURL + "/monthlyReportCompany", {
+            method: 'POST', body: {
+                "creationDate": now,
+                "startDate": startDate.toISOString(),
+                "endDate": endDate.toISOString(),
+                "viewers": views.value,
+                "hoursWatched": parseFloat(viewTime.value),
+                "donations": parseFloat(donations.value),
+                "revenue": parseFloat(viewTimeEarnings.value)
+        }});
+
+        if (error.value === null) {
+            const content = data.value;
+            const link = document.createElement("a");
+            const file = new Blob([content], {
+              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            });
+            link.href = URL.createObjectURL(file);
+            link.download = `monthlyReportCompany_${now.substring(0, 10)}.docx`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
